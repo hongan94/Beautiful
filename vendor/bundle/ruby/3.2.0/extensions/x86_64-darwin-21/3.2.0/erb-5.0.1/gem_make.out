@@ -1,0 +1,18 @@
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/erb-5.0.1/ext/erb/escape
+/Users/phamhongan/.rvm/rubies/ruby-3.2.6/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/erb-5.0.1/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250521-55037-de4dnf sitelibdir\=./.gem.20250521-55037-de4dnf clean
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/erb-5.0.1/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250521-55037-de4dnf sitelibdir\=./.gem.20250521-55037-de4dnf
+compiling escape.c
+linking shared-object erb/escape.bundle
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/erb-5.0.1/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250521-55037-de4dnf sitelibdir\=./.gem.20250521-55037-de4dnf install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 escape.bundle ./.gem.20250521-55037-de4dnf/erb
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/erb-5.0.1/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250521-55037-de4dnf sitelibdir\=./.gem.20250521-55037-de4dnf clean
