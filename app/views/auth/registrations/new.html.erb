@@ -1,0 +1,98 @@
+
+<div class="flex items-center justify-center grow bg-center bg-no-repeat page-bg">
+  <div class="card max-w-[370px] w-full">
+    <%= form_with(model: @user, url: sign_up_registration_path, class: "card-body flex flex-col gap-5 p-10", id: "sign_up_form") do |f| %>
+      <div class="text-center mb-2.5">
+        <h3 class="text-lg font-medium text-gray-900 leading-none mb-2.5">
+          Sign up
+        </h3>
+        <div class="flex items-center justify-center">
+          <span class="text-2sm text-gray-700 me-1.5">
+            Already have an Account?
+          </span>
+          <%= link_to "Sign In", sign_in_session_path, class: "text-2sm link" %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <a class="btn btn-light btn-sm justify-center" href="#">
+          <%= image_tag "brand-logos/google.svg", class: "size-3.5 shrink-0", alt: "Google" %>
+          Use Google
+        </a>
+        <a class="btn btn-light btn-sm justify-center" href="#">
+          <%= image_tag "brand-logos/apple-black.svg", class: "size-3.5 shrink-0 dark:hidden", alt: "Apple" %>
+          <%= image_tag "brand-logos/apple-white.svg", class: "size-3.5 shrink-0 light:hidden", alt: "Apple" %>
+          Use Apple
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="border-t border-gray-200 w-full"></span>
+        <span class="text-2xs text-gray-600 uppercase">or</span>
+        <span class="border-t border-gray-200 w-full"></span>
+      </div>
+
+      <% if @user.errors.any? %>
+        <div class="rounded-md bg-red-50 p-4">
+          <div class="flex">
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">
+                <%= pluralize(@user.errors.count, "error") %> prohibited this account from being saved:
+              </h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="flex flex-col gap-1">
+        <%= f.label :email_address, class: "form-label text-gray-900" %>
+        <%= f.email_field :email_address, 
+            class: "input",
+            placeholder: "email@email.com" %>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <%= f.label :password, class: "form-label font-normal text-gray-900" %>
+        <div class="input" data-toggle-password="true">
+          <%= f.password_field :password,
+              class: "w-full",
+              placeholder: "Enter Password" %>
+          <button class="btn btn-icon" data-toggle-password-trigger="true" type="button">
+            <i class="ki-filled ki-eye text-gray-500 toggle-password-active:hidden"></i>
+            <i class="ki-filled ki-eye-slash text-gray-500 hidden toggle-password-active:block"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <%= f.label :password_confirmation, class: "form-label font-normal text-gray-900" %>
+        <div class="input" data-toggle-password="true">
+          <%= f.password_field :password_confirmation,
+              class: "w-full",
+              placeholder: "Re-enter Password" %>
+          <button class="btn btn-icon" data-toggle-password-trigger="true" type="button">
+            <i class="ki-filled ki-eye text-gray-500 toggle-password-active:hidden"></i>
+            <i class="ki-filled ki-eye-slash text-gray-500 hidden toggle-password-active:block"></i>
+          </button>
+        </div>
+      </div>
+
+      <label class="checkbox-group">
+        <%= f.check_box :terms_accepted, class: "checkbox checkbox-sm" %>
+        <span class="checkbox-label">
+          I accept
+          <%#= link_to "Terms & Conditions", terms_path, class: "text-2sm link" %>
+        </span>
+      </label>
+
+      <%= f.submit "Sign up", class: "btn btn-primary flex justify-center grow" %>
+    <% end %>
+  </div>
+</div>
