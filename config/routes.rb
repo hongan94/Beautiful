@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  root 'homes#index'
   resource :session, path: 'admin', controller: 'auth/sessions', only: [] do
     get :sign_in, action: :new
     post :sign_in, action: :create
@@ -17,6 +18,13 @@ Rails.application.routes.draw do
     post :sign_up, action: :create
     get :check_mail_verify_email, action: :check_mail
   end
+  namespace :admin do
+    resources :dashboards, only: [:index]
+    resources :managers
+    resources :users
+    resources :genres
+  end
+
 
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

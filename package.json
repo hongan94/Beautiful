@@ -1,0 +1,18 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.25.8",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "generate:barrel": "node scripts/generate-barrel.js",
+    "build": "npm run generate:barrel && esbuild app/javascript/application.ts --bundle --outdir=app/assets/builds --sourcemap",
+    "dev": "npm run build --watch",
+    "build:css": "sass ./app/assets/stylesheets/application.sass:./app/assets/builds/application.css"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8"
+  }
+}

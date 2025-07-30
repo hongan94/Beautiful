@@ -1,0 +1,38 @@
+     <!-- Beautiful SaaS Users Dashboard -->
+     <div class="container-fixed" id="content_container"></div>
+
+     <div class="container-fixed">
+       <div class="flex flex-wrap items-center lg:items-end justify-between gap-7 pb-10">
+         <div class="flex flex-col justify-center gap-3">
+           <h1 class="text-2xl font-bold leading-tight text-primary">
+             Managers
+           </h1>
+         </div>
+         <div class="flex items-center gap-3">
+           <a class="btn btn-sm btn-light border border-gray-300 shadow-sm hover:bg-gray-100 transition" href="#">
+             <svg class="inline-block w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 16v-8m0 0l-4 4m4-4l4 4"></path></svg>
+             Import CSV
+           </a>
+           <a class="btn btn-sm btn-primary shadow-md hover:bg-primary-dark transition" href="#">
+             <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+             Add Member
+           </a>
+         </div>
+       </div>
+     </div>
+
+     <div class="container-fixed">
+       <div class="grid gap-7 lg:gap-10">
+         <div class="card card-grid min-w-full shadow-lg rounded-lg border border-gray-100">
+           <%= render 'admin/managers/partial/search' %>
+           <div class="card-body bg-white rounded-b-lg">
+             <div data-datatable="true" data-datatable-page-size="10" id="managers_table">
+               <div class="scrollable-x-auto rounded-lg border border-gray-100 shadow-inner">
+                 <%= render 'admin/managers/partial/table' %>
+               </div>
+               <%= render 'admin/managers/partial/pagy' %>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>

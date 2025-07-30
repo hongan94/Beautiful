@@ -1,0 +1,22 @@
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/byebug-12.0.0/ext/byebug
+/Users/phamhongan/.rvm/rubies/ruby-3.2.6/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/byebug-12.0.0/ext/byebug
+make DESTDIR\= sitearchdir\=./.gem.20250602-23662-iha59d sitelibdir\=./.gem.20250602-23662-iha59d clean
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/byebug-12.0.0/ext/byebug
+make DESTDIR\= sitearchdir\=./.gem.20250602-23662-iha59d sitelibdir\=./.gem.20250602-23662-iha59d
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.bundle
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/byebug-12.0.0/ext/byebug
+make DESTDIR\= sitearchdir\=./.gem.20250602-23662-iha59d sitelibdir\=./.gem.20250602-23662-iha59d install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 byebug.bundle ./.gem.20250602-23662-iha59d/byebug
+
+current directory: /Users/phamhongan/ANPHAM/Ruby/PERSON/Template/Beautiful/vendor/bundle/ruby/3.2.0/gems/byebug-12.0.0/ext/byebug
+make DESTDIR\= sitearchdir\=./.gem.20250602-23662-iha59d sitelibdir\=./.gem.20250602-23662-iha59d clean

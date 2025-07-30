@@ -9,7 +9,7 @@ gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
+# gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -61,3 +61,12 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "byebug", "~> 12.0"
+gem "friendly_id", "~> 5.4"
+
+gem "image_processing", "~> 1.14"
+
+gem "pagy", "~> 9.3"
+
+gem "jsbundling-rails", "~> 1.3"

@@ -19,10 +19,29 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
   </head>
 
-  <body>
-    <%= yield %>
+ <body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] demo1 sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
+   <!-- Page -->
+  <!-- Main -->
+  <div class="flex grow">
+   <!-- Sidebar -->
+   <%= render 'layouts/admin/sidebar' %>
+   <!-- End of Sidebar -->
+   <!-- Wrapper -->
+   <div class="wrapper flex grow flex-col">
+    <!-- Header -->
+    <%= render 'layouts/admin/header' %>
+    <!-- End of Header -->
+    <!-- Content -->
+    <main class="grow content pt-5" id="content" role="content">
+        <%= yield %>
+    </main>
+    <%= render 'layouts/admin/footer' %>
+   </div>
+   <!-- End of Wrapper -->
+  </div>
   </body>
 </html>

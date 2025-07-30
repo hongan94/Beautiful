@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'keenicons-duotone';
   src:
-    font-url('/assets/keenicons-duotone.ttf?gcn9yo') format('truetype'),
-    font-url('/assets/keenicons-duotone.woff?gcn9yo') format('woff'),
-    font-url('/assets/keenicons-duotone.svg?gcn9yo#keenicons-duotone') format('svg');
+    url('/keenicons-duotone.ttf?gcn9yo') format('truetype'),
+    url('/keenicons-duotone.woff?gcn9yo') format('woff'),
+    url('/keenicons-duotone.svg?gcn9yo#keenicons-duotone') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -5467,9 +5467,9 @@
 @font-face {
   font-family: 'keenicons-filled';
   src:
-    font-url('/assets/fonts/keenicons-filled.ttf?nz57rx') format('truetype'),
-    font-url('/assets/fonts/keenicons-filled.woff?nz57rx') format('woff'),
-    font-url('/assets/fonts/keenicons-filled.svg?nz57rx#keenicons-filled') format('svg');
+    url('keenicons-filled.ttf?nz57rx') format('truetype'),
+    url('keenicons-filled.woff?nz57rx') format('woff'),
+    url('keenicons-filled.svg?nz57rx#keenicons-filled') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -10744,9 +10744,9 @@
 @font-face {
   font-family: 'keenicons-outline';
   src:
-    font-url('fonts/keenicons-outline.ttf?3m7u3e') format('truetype'),
-    font-url('fonts/keenicons-outline.woff?3m7u3e') format('woff'),
-    font-url('fonts/keenicons-outline.svg?3m7u3e#keenicons-outline') format('svg');
+    url('/keenicons-outline.ttf?3m7u3e') format('truetype'),
+    url('/keenicons-outline.woff?3m7u3e') format('woff'),
+    url('/keenicons-outline.svg?3m7u3e#keenicons-outline') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -12466,9 +12466,9 @@
 @font-face {
   font-family: 'keenicons-solid';
   src:
-    font-url('fonts/keenicons-solid.ttf?m54ea1') format('truetype'),
-    font-url('fonts/keenicons-solid.woff?m54ea1') format('woff'),
-    font-url('fonts/keenicons-solid.svg?m54ea1#keenicons-solid') format('svg');
+    url('/keenicons-solid.ttf?m54ea1') format('truetype'),
+    url('/keenicons-solid.woff?m54ea1') format('woff'),
+    url('/keenicons-solid.svg?m54ea1#keenicons-solid') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;

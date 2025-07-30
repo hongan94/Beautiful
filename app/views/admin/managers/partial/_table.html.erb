@@ -1,0 +1,108 @@
+<table class="table table-auto table-border shadow-lg rounded-lg overflow-hidden" data-datatable-table="true">
+  <thead class="bg-gray-50">
+    <tr>
+      <th class="w-[60px] text-center align-middle">
+        <input class="checkbox checkbox-sm accent-primary" data-datatable-check="true" type="checkbox"/>
+      </th>
+      <th class="min-w-[275px] align-middle">
+        <span class="sort asc flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Profile</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="min-w-[150px] align-middle">
+        <span class="sort flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Phone</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="min-w-[100px] align-middle">
+        <span class="sort flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Gender</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="min-w-[175px] align-middle">
+        <span class="sort flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Address</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="min-w-[75px] align-middle">
+        <span class="sort flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Status</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="w-28 text-center align-middle">
+        <span class="sort flex items-center gap-1">
+          <span class="sort-label font-semibold text-gray-800 tracking-wide">Created At</span>
+          <span class="sort-icon"></span>
+        </span>
+      </th>
+      <th class="w-14 text-center align-middle">
+      </th>
+      <th class="w-14 text-center align-middle">
+      </th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-100">
+    <% @managers.each do |manager| %>
+      <tr class="hover:bg-primary/5 transition">
+        <td class="text-center align-middle">
+          <input class="checkbox checkbox-sm accent-primary" data-datatable-row-check="true" type="checkbox" value="<%= manager.id %>"/>
+        </td>
+        <td class="align-middle">
+          <div class="flex items-center gap-3">
+            <%= image_tag((manager.avatar_url.presence || 'avatars/300-3.png'), alt: manager.name, class: "rounded-full size-9 shadow border border-gray-200") %>
+            <div class="flex flex-col">
+              <a class="text-base font-semibold text-gray-900 hover:text-primary transition mb-0.5" href="23232">
+                <%= manager.name %>
+              </a>
+              <a class="text-sm text-gray-600 font-normal hover:text-primary transition" href="mailto:<%= manager.email_address %>">
+                <%= manager.email_address %>
+              </a>
+            </div>
+          </div>
+        </td>
+        <td class="align-middle">
+          <div class="flex flex-wrap gap-1.5">
+            <%= manager.phone_number %>
+          </div>
+        </td>
+        <td class="align-middle">
+          <div class="flex flex-col">
+            <span class="text-sm text-gray-800 font-medium">
+              <%= manager.gender&.capitalize || "—" %>
+            </span>
+          </div>
+        </td>
+        <td class="text-gray-800 font-medium align-middle">
+          <%= manager.address.presence || "—" %>
+        </td>
+        <td class="align-middle">
+          <label class="switch switch-sm">
+            <input type="checkbox" value="1" <%= manager.active? ? "checked" : "" %>/>
+          </label>
+        </td>
+        <td class="align-middle">
+          <div class="flex justify-center">
+            <%= manager.created_at.strftime("%d/%m/%Y %H:%M") %>
+          </div>
+        </td>
+        <td>
+          <a class="btn btn-sm btn-icon btn-clear btn-light" href="#">
+          <i class="ki-filled ki-notepad-edit">
+          </i>
+          </a>
+        </td>
+        <td>
+          <a class="btn btn-sm btn-icon btn-clear btn-light" href="#">
+          <i class="ki-filled ki-trash">
+          </i>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
