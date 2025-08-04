@@ -13,10 +13,10 @@
              <svg class="inline-block w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 16v-8m0 0l-4 4m4-4l4 4"></path></svg>
              Import CSV
            </a>
-           <a class="btn btn-sm btn-primary shadow-md hover:bg-primary-dark transition" href="#">
+           <%= link_to new_admin_manager_path, class: "btn btn-sm btn-primary shadow-md hover:bg-primary-dark transition" do %>
              <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
-             Add Member
-           </a>
+             Add Manager
+           <% end %>
          </div>
        </div>
      </div>

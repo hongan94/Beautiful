@@ -1,8 +1,14 @@
 class Admin::UsersController < ApplicationController
+  include JsonIndexable
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.all
+    respond_to do |format|
+      format.html
+      format.json do
+        handle_json_index(controller_name.classify, UserBlueprint) { |model| model.user }
+      end
+    end
   end
 
   def show
@@ -45,6 +51,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email_address, :password, :password_confirmation, :first_name, :last_name, :phone_number, :gender, :address, :status, :avatar_url)
   end
 end

@@ -70,7 +70,7 @@ const KTComponents = {
 		KTTheme.init();
 		KTImageInput.init();
 		KTTogglePassword.init();
-		KTDataTable.init();
+		// KTDataTable.init();
 	}
 };
 
@@ -98,7 +98,7 @@ declare global {
 		KTTheme: typeof KTTheme;
 		KTImageInput: typeof KTImageInput;
 		KTTogglePassword: typeof KTTogglePassword;
-		KTDataTable: typeof KTDataTable;
+		// KTDataTable: typeof KTDataTable;
 		KTComponents: typeof KTComponents;
 	}
 }
@@ -125,7 +125,7 @@ window.KTStepper = KTStepper;
 window.KTTheme = KTTheme;
 window.KTImageInput = KTImageInput;
 window.KTTogglePassword = KTTogglePassword;
-window.KTDataTable = KTDataTable;
+// window.KTDataTable = KTDataTable;
 window.KTComponents = KTComponents;
 
 export default KTComponents;

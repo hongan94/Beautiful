@@ -70,3 +70,7 @@ gem "image_processing", "~> 1.14"
 gem "pagy", "~> 9.3"
 
 gem "jsbundling-rails", "~> 1.3"
+
+gem "jsonapi-serializer", "~> 2.2"
+
+gem "blueprinter", "~> 1.1"

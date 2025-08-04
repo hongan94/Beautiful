@@ -42,7 +42,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 
 	constructor(element: HTMLElement, config?: KTDataTableConfigInterface) {
 		super();
-
 		if (KTData.has(element as HTMLElement, this._name)) return;
 
 		this._defaultConfig = this._initDefaultConfig(config);
@@ -82,6 +81,7 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 			 * HTTP method for server-side API callKTDataTableConfigInterface
 			 */
 			requestMethod: 'GET',
+			apiEndpoint: `${window.location.origin}${config?.data?.source?.read?.url ?? ''}`,
 			/**
 			 * Custom HTTP headers for the API request
 			 */
@@ -447,7 +447,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 
 		// Clone the original data
 		let _temp = this._data = [...originalData] as T[];
-
 		if (search) {
 			_temp = this._data = this._config.search.callback.call(this, this._data, search) as T[];
 		}
@@ -574,14 +573,12 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 
 		this._fireEvent('fetched', { response: responseData });
 		this._dispatchEvent('fetched', { response: responseData });
-
 		// Use the mapResponse function to transform the data if provided
 		if (typeof this._config.mapResponse === 'function') {
 			responseData = this._config.mapResponse.call(this, responseData);
 		}
 
 		this._data = responseData.data;
-
 		this._config._state.totalItems = responseData.totalCount;
 
 		await this._draw();
@@ -713,7 +710,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 		this._dispatchEvent('drew');
 
 		this._hideSpinner(); // Hide spinner after data is fetched
-
 		if (this._config.stateSave) {
 			this._saveState();
 		}
@@ -843,15 +839,12 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 			this._noticeOnTable(this._config.infoEmpty || '');
 			return tbodyElement;
 		}
-
 		this._data.forEach((item: T, rowIndex: number) => {
 			const row = document.createElement('tr');
-
 			if (!this._config.columns) {
 				const dataRowAttributes = this.getState().originalDataAttributes
 					? this.getState().originalDataAttributes[rowIndex]
 					: null;
-
 				Object.keys(item).forEach((key: keyof T | number, colIndex: number) => {
 					const td = document.createElement('td');
 					td.innerHTML = item[key] as string;
@@ -868,17 +861,16 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 				Object.keys(this._config.columns).forEach((key: keyof T) => {
 					const td = document.createElement('td');
 					const columnDef = this._config.columns[key as string];
-
 					if (typeof columnDef.render === 'function') {
 						td.innerHTML = columnDef.render.call(this, item[key] as string, item, this) as string;
 					} else {
-						td.textContent = item[key] as string;
+						// Use key as the field name to access the value from item
+						td.textContent = item[columnDef.field] as string;
 					}
 
 					if (typeof columnDef.createdCell === 'function') {
 						columnDef.createdCell.call(this, td, item[key], item, row);
 					}
-
 					row.appendChild(td);
 				});
 			}
@@ -905,7 +897,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 	private _updatePagination(): void {
 		this._removeChildElements(this._sizeElement);
 		this._createPageSizeControls(this._sizeElement);
-
 		this._removeChildElements(this._paginationElement);
 		this._createPaginationControls(this._infoElement, this._paginationElement);
 	}
@@ -986,10 +977,8 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 		if (!_infoElement || !_paginationElement || this._data.length === 0) {
 			return null;
 		}
-
 		this._setPaginationInfoText(_infoElement);
 		const paginationContainer = this._createPaginationContainer(_paginationElement);
-
 		if (paginationContainer) {
 			this._createPaginationButtons(paginationContainer);
 		}
@@ -1028,7 +1017,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 	private _createPaginationButtons(paginationContainer: HTMLElement): void {
 		const { page: currentPage, totalPages } = this.getState();
 		const { previous, next, number, more } = this._config.pagination;
-
 		// Helper function to create a button
 		const createButton = (text: string, className: string, disabled: boolean, handleClick: () => void): HTMLButtonElement => {
 			const button = document.createElement('button') as HTMLButtonElement;
@@ -1162,7 +1150,6 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 		this._dispatchEvent('stateSave');
 
 		const ns: string = this._tableNamespace();
-
 		if (ns) {
 			localStorage.setItem(ns, JSON.stringify(this.getState() as KTDataTableStateInterface));
 		}
@@ -1581,7 +1568,7 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 	 * loaded and parsed by the browser. It will create instances of
 	 * KTDataTable for all elements with a data-datatable="true" attribute.
 	 */
-	public static createInstances(): void {
+	public static createInstances(params: Record<string, any> = {}): void {
 		const elements = document.querySelectorAll('[data-datatable="true"]') as NodeListOf<HTMLElement>;
 
 		elements.forEach((element) => {
@@ -1590,7 +1577,9 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 				 * Create an instance of KTDataTable for the given element
 				 * @param element The element to create an instance for
 				 */
-				const instance = new KTDataTable(element);
+				const instance = new KTDataTable(element, {
+					...params, // truyền thêm config vào đây
+				});
 				this._instances.set(element, instance);
 			}
 		});
@@ -1615,7 +1604,7 @@ export class KTDataTable<T extends KTDataTableDataInterface> extends KTComponent
 	public static init(): void {
 		// Create instances of KTDataTable for all elements with a
 		// data-datatable="true" attribute
-		KTDataTable.createInstances();
+		// KTDataTable.createInstances();
 	}
 
 	// Other plugin methods can be added here

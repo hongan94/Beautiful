@@ -1,0 +1,24 @@
+<div class="card-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 bg-gradient-to-r from-white via-gray-50 to-white rounded-t-lg shadow-sm">
+  <h3 class="card-title font-semibold text-base text-primary flex items-center gap-2">
+  </h3>
+  <div class="flex flex-wrap items-center gap-3">
+    <div class="relative">
+      <input class="input input-sm pl-8" data-datatable-search="#users_table" placeholder="Search Users" type="text"> 
+      <span class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400">
+        <i class="ki-filled ki-magnifier text-lg"></i>
+      </span>
+    </div>
+    <div class="flex flex-wrap gap-2.5">
+      <select class="select select-sm w-28 rounded-lg border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary bg-white shadow">
+        <option value="1">Active</option>
+        <option value="2">Disabled</option>
+        <option value="3">Pending</option>
+      </select>
+      <select class="select select-sm w-28 rounded-lg border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary bg-white shadow">
+        <option value="1">Latest</option>
+        <option value="2">Older</option>
+        <option value="3">Oldest</option>
+      </select>
+    </div>
+  </div>
+</div>
