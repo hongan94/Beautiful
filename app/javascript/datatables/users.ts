@@ -1,5 +1,5 @@
-// managers_table.ts
 import { KTDataTable } from '../core/components/datatable/datatable';
+import { swalSuccess, swalError } from '../utils/alerts';
 
 // Beautifully configure the users datatable
 const usersTableConfig = {
@@ -67,9 +67,10 @@ const usersTableConfig = {
       field: 'status',
       render: (_data: any, row: any) => {
         const status = row?.status ?? '';
+        const id = row?.id ?? '';
         return `
           <label class="switch switch-sm">
-            <input type="checkbox" value="1" ${status === 'active' ? 'checked' : ''}/>
+            <input type="checkbox" value="1" data-status-checkbox="true" data-id="${id}" ${status === 'active' ? 'checked' : ''}/>
           </label>
         `;
       }
@@ -81,7 +82,7 @@ const usersTableConfig = {
       field: 'edit',
       render: (_data: any, row: any) => {
         return `
-          <a class="btn btn-sm btn-icon btn-clear btn-light" href="#">
+          <a class="btn btn-sm btn-icon btn-primary btn-clear" href="/admin/users/${row?.id}/edit" title="Edit User">
             <i class="ki-filled ki-notepad-edit"></i>
           </a>
         `;
@@ -91,19 +92,134 @@ const usersTableConfig = {
       field: 'delete',
       render: (_data: any, row: any) => {
         return `
-          <a class="btn btn-sm btn-icon btn-clear btn-light" href="#">
-            <i class="ki-filled ki-trash"></i>
-          </a>
-        `;
+        <button type="button" class="btn btn-sm btn-icon btn-clear btn-danger delete-record" data-action="delete-record" data-id="${row?.id}" data-href="/admin/users/${row?.id}" title="Delete User">
+          <i class="ki-filled ki-trash"></i>
+        </button>
+      `;
       }
     }
   ]
 };
 
+
 const tableElement = document.querySelector('#users_table');
+let datatable: KTDataTable | undefined = undefined;
 if (tableElement instanceof HTMLElement) {
-  new KTDataTable(tableElement, usersTableConfig);
+  // Example: use other datatable functions after initialization
+  datatable = new KTDataTable(tableElement, usersTableConfig);
+
+  // Example: reload the table data
+  // datatable.reload();
+
+  // Example: go to page 2
+  // datatable.goPage(2);
+
+  // Example: set page size to 20
+  // datatable.setPageSize(20);
+
+  // Example: sort by 'name' column
+  // datatable.sort('name');
+
+  // Example: show spinner
+  // datatable.showSpinner();
+
+  // Example: hide spinner
+  // datatable.hideSpinner();
+
+  // Example: set a filter (replace 'status' and 'active' as needed)
+  // datatable.setFilter({ column: 'status', value: 'active' });
+
+  // Example: search
+  // datatable.search('John Doe');
 }
 
-// Initialize the beautiful managers datatable
-// KTDataTable.createInstances(managersTableConfig);
+// Function to handle status checkbox change events (TypeScript)
+function handleStatusCheckboxChange(event: Event): void {
+  const target = event.target as HTMLInputElement;
+  if (target && target.dataset.statusCheckbox === "true") {
+    const id: string | undefined = target.dataset.id;
+    const checked: boolean = target.checked;
+    fetch(`/admin/users/update_status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''
+      },
+      body: JSON.stringify({ status: checked ? 'active' : 'inactive', id: id })
+    })
+    .then((response: Response) => response.json())
+    .then((data: any) => {
+      if (data && data.success) {
+        swalSuccess('Status updated', `User status is now: ${data.status}`);
+      } else {
+        swalError('Failed to update status', data?.error || (data?.errors ? data.errors.join(', ') : 'Unknown error'));
+      }
+    })
+    .catch((error: any) => {
+      swalError('Error updating status', error?.message || 'An unexpected error occurred');
+      // Optionally revert checkbox if error
+      target.checked = !checked;
+    });
+  }
+}
+
+// Delegate event for dynamically rendered checkboxes
+document.addEventListener('DOMContentLoaded', () => {
+  const usersTable = document.getElementById('users_table');
+  if (usersTable) {
+    usersTable.addEventListener('change', (event: Event) => {
+      handleStatusCheckboxChange(event);
+    });
+  }
+});
+
+// Helper function to get current search/filter/sort values
+function getUserTableFilters() {
+  const statusSelect = document.querySelector('.search-status') as HTMLSelectElement | null;
+  const sortBySelect = document.querySelector('.sort-by') as HTMLSelectElement | null;
+
+  return {
+    status: statusSelect?.value || '',
+    sort_by: sortBySelect?.value 
+  };
+}
+
+// Function to reload datatable with filters
+function reloadUsersTableWithFilters() {
+  const filters = getUserTableFilters();
+  if (datatable) {
+    // Set status filter (if supported by KTDataTable)
+    if (typeof (datatable as any).setFilter === 'function') {
+      if (filters.status) {
+        (datatable as any).setFilter({ column: 'status', value: filters.status });
+      }
+      if (filters.sort_by) {
+        (datatable as any).setFilter({ column: 'sort_by', value: filters.sort_by });
+      }
+    }
+    // Reload the table (fetches new data from server)
+    datatable.reload();
+  }
+}
+
+// Save config to window for access in reload function
+// @ts-ignore
+window.usersTableConfig = usersTableConfig;
+
+// Add event listeners for search, status, and sort
+document.addEventListener('DOMContentLoaded', () => {
+  const statusSelect = document.querySelector('.search-status') as HTMLSelectElement | null;
+  const sortBySelect = document.querySelector('.sort-by') as HTMLSelectElement | null;
+
+  if (statusSelect) {
+    statusSelect.addEventListener('change', () => {
+      reloadUsersTableWithFilters();
+    });
+  }
+
+  if (sortBySelect) {
+    sortBySelect.addEventListener('change', () => {
+      reloadUsersTableWithFilters();
+    });
+  }
+});

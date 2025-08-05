@@ -5,19 +5,6 @@ class Manager < User
 
   # Map sortField (which is the index of the column header) to the actual column name
   def self.filter_records(params)
-    # Define the mapping from index to column name
-    # Adjust this array to match the order of your table headers
-    columns = [
-      'id',           # 0
-      'name',         # 1 (special handling below)
-      'phone_number', # 2
-      'gender',       # 3
-      'address',      # 4
-      'status',       # 5
-      'created_at'    # 6
-      # Add more columns if needed
-    ]
-
     records = all
 
     # Filter by name or email if search param is present
@@ -30,8 +17,7 @@ class Manager < User
     end
 
     if params[:sortField].present? && params[:sortOrder].present?
-      sort_index = params[:sortField].to_i
-      sort_column = columns[sort_index] rescue nil
+      sort_column = params[:sortField]
       sort_order = params[:sortOrder].downcase
 
       if sort_column.present? && %w[asc desc].include?(sort_order)
@@ -44,6 +30,40 @@ class Manager < User
       end
     end
 
+    # INSERT_YOUR_CODE
+    # Handle filters param (expects JSON array of {column, value})
+    if params[:filters].present?
+      begin
+        filters = params[:filters]
+        # Accept both JSON string and array
+        filters = JSON.parse(filters) if filters.is_a?(String)
+        filters.each do |filter|
+          column = filter['column'] || filter[:column]
+          value = filter['value'] || filter[:value]
+          next if value.blank?
+
+          case column
+          when 'status'
+            records = records.where(status: value)
+          when 'sort_by'
+            # Custom sort_by logic
+            if value == 'latest'
+              records = records.reorder(created_at: :desc)
+            elsif value == 'oldest'
+              records = records.reorder(created_at: :asc)
+            end
+          # Add more filter columns as needed
+          else
+            # Generic filter for other columns
+            if records.column_names.include?(column.to_s)
+              records = records.where(column => value)
+            end
+          end
+        end
+      rescue JSON::ParserError
+        # Ignore filter if not valid JSON
+      end
+    end
     records
   end
 

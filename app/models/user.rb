@@ -8,7 +8,8 @@ class User < ApplicationRecord
   enum :status, { active: 0, inactive: 1 }, default: :active
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
-
+  validates :email_address, :phone_number, :first_name, :last_name, presence: true
+  
   def name
     "#{first_name} #{last_name}"
   end

@@ -1,0 +1,14 @@
+    <div class="container-fixed">
+    <% if notice %>
+    <div class="badge badge-sm badge-success badge-outline mb-4">
+        <svg class="inline-block w-4 h-4 mr-1 text-success" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M5 13l4 4L19 7"></path></svg>
+        <%= notice %>
+    </div>
+    <% end %>
+    <% if alert %>
+    <div class="badge badge-sm badge-danger badge-outline mb-4">
+        <svg class="inline-block w-4 h-4 mr-1 text-danger" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <%= alert %>
+    </div>
+    <% end %>
+    </div>

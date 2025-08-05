@@ -1,6 +1,6 @@
 class Admin::ManagersController < ApplicationController
   include JsonIndexable
-  before_action :set_manager, only: [:show, :edit, :update, :destroy]
+  before_action :set_manager, only: [:show, :edit, :update, :destroy, :update_status]
 
   def index
     respond_to do |format|
@@ -46,7 +46,24 @@ class Admin::ManagersController < ApplicationController
 
   def destroy
     @manager.destroy
-    redirect_to admin_managers_path, notice: 'Manager was successfully deleted.'
+    respond_to do |format|
+      format.html { redirect_to admin_managers_path, notice: 'Manager was successfully deleted.' }
+      format.json { render json: { message: 'Manager was successfully deleted.' }, status: :ok }
+    end
+  end
+
+  def update_status
+    status = params[:status]
+
+    if Manager.statuses.key?(status)
+      if @manager.update(status: status)
+        render json: { success: true, status: @manager.status }
+      else
+        render json: { success: false, errors: @manager.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { success: false, error: "Invalid status" }, status: :bad_request
+    end
   end
 
   private

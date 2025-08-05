@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   include JsonIndexable
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :update_status]
 
   def index
     respond_to do |format|
@@ -43,6 +43,22 @@ class Admin::UsersController < ApplicationController
     @user.destroy
     redirect_to admin_users_path, notice: 'User was successfully deleted.'
   end
+
+
+  def update_status
+    status = params[:status]
+
+    if User.statuses.key?(status)
+      if @user.update(status: status)
+        render json: { success: true, status: @user.status }
+      else
+        render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { success: false, error: "Invalid status" }, status: :bad_request
+    end
+  end
+
 
   private
 

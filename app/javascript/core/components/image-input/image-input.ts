@@ -66,7 +66,7 @@ export class KTImageInput extends KTComponent implements KTImageInputInterface {
     }
 
     reader.readAsDataURL(this._inputElement.files[0]);
-    this._inputElement.value = "";
+    // this._inputElement.value = "";
     this._hiddenElement.value = "";
     this._lastMode = 'new';
 

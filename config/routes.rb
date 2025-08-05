@@ -20,8 +20,16 @@ Rails.application.routes.draw do
   end
   namespace :admin do
     resources :dashboards, only: [:index]
-    resources :managers
-    resources :users
+    resources :managers do 
+      collection do 
+        put :update_status
+      end 
+    end 
+    resources :users do 
+      collection do 
+        put :update_status
+      end 
+    end 
     resources :genres
   end
 

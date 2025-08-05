@@ -1,14 +1,12 @@
-    <%= form_with(model: @manager, url: @manager.persisted? ? admin_manager_path(@manager) : admin_managers_path, local: true, html: {multipart: true}, method: @manager.persisted? ? :patch : :post) do |f| %>
+    <%= form_with(model: @manager, url: @manager.persisted? ? admin_manager_path(@manager) : admin_managers_path, local: true, html: {multipart: true, id: "manager-form"}, method: @manager.persisted? ? :patch : :post) do |f| %>
       <% if @manager.errors.any? %>
-        <div class="mb-4">
-          <div class="bg-red-600 border border-red-700 text-white px-4 py-3 rounded relative" role="alert" style="background-color: #dc2626; color: #fff; border-color: #991b1b;">
-            <strong class="font-bold">There were errors saving the manager:</strong>
-            <ul class="mt-2 ml-4 list-disc text-sm">
-              <% @manager.errors.full_messages.each do |msg| %>
-                <li style="color: #fff;"><%= msg %></li>
-              <% end %>
-            </ul>
-          </div>
+        <div style="color: red; border: 1px solid #f00; background: #fff0f0; padding: 1em; margin-bottom: 1em;">
+          <b>There were errors saving the manager:</b>
+          <ul style="margin-top: 0.5em; margin-left: 1.5em;">
+            <% @manager.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
         </div>
       <% end %>
       <div class="card pb-2.5">
@@ -27,16 +25,16 @@
                 150x150px JPEG, PNG Image
               </span>
               <div class="image-input size-16" data-image-input="true">
-                <%= f.file_field :avatar, accept: ".png, .jpg, .jpeg" %>
-                <%= f.hidden_field :avatar_remove %>
+                <%= f.file_field :avatar_url, accept: ".png, .jpg, .jpeg" %>
+                <%= f.hidden_field :avatar, value: f.object.avatar_url || "" %>
                 <div class="btn btn-icon btn-icon-xs btn-light shadow-default absolute z-1 size-5 -top-0.5 -end-0.5 rounded-full" data-image-input-remove="" data-tooltip="#image_input_tooltip" data-tooltip-trigger="hover">
                   <i class="ki-filled ki-cross"></i>
                 </div>
                 <span class="tooltip" id="image_input_tooltip">
                   Click to remove or revert
                 </span>
-                <div class="image-input-placeholder rounded-full border-2 border-success image-input-empty:border-gray-300" style="background-image:url(assets/media/avatars/blank.png)">
-                  <div class="image-input-preview rounded-full" style="background-image:url(assets/media/avatars/300-2.png)">
+                <div class="image-input-placeholder rounded-full border-2 border-success image-input-empty:border-gray-300" style="background-image:url(<%= asset_path('avatars/blank.png') %>)">
+                  <div class="image-input-preview rounded-full" style="background-image:url(<%= f.object&.avatar_url.present? ? url_for(f.object.avatar_url) : asset_path('avatars/blank.png') %>)">
                   </div>
                   <div class="flex items-center justify-center cursor-pointer h-5 left-0 right-0 bottom-0 bg-dark-clarity absolute">
                     <svg class="fill-light opacity-80" height="12" viewbox="0 0 14 12" width="14" xmlns="http://www.w3.org/2000/svg">
@@ -52,13 +50,13 @@
             <label class="form-label max-w-56">
               First Name
             </label>
-            <%= f.text_field :first_name, class: "input", placeholder: "First Name" %>
+            <%= f.text_field :first_name, class: "input", placeholder: "First Name", autocomplete: "given-name", required: true %>
           </div>
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">
               Last Name
             </label>
-            <%= f.text_field :last_name, class: "input", placeholder: "Last Name" %>
+            <%= f.text_field :last_name, class: "input", placeholder: "Last Name", autocomplete: "family-name", required: true %>
           </div>
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">
@@ -70,13 +68,13 @@
             <label class="form-label max-w-56">
               Phone Number
             </label>
-            <%= f.text_field :phone_number, class: "input", placeholder: "Phone number" %>
+            <%= f.telephone_field :phone_number, class: "input", placeholder: "Phone number", autocomplete: "tel", required: true %>
           </div>
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">
               Email Address
             </label>
-            <%= f.email_field :email_address, class: "input", placeholder: "Email address" %>
+            <%= f.email_field :email_address, class: "input", placeholder: "Email address", autocomplete: "email", required: true %>
           </div>
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">
@@ -104,16 +102,20 @@
         </div>
         <div class="card-body grid gap-5">
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-            <label class="form-label max-w-56">
+            <label class="form-label max-w-56 min-w-56">
               Password
             </label>
-            <%= f.password_field :password, class: "input", placeholder: "Password" %>
+            <div class="w-full">
+              <%= f.password_field :password, class: "input", placeholder: "Password", autocomplete: "new-password" %>
+            </div>
           </div>
           <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5 mb-2.5">
-            <label class="form-label max-w-56">
+            <label class="form-label max-w-56 min-w-56">
               Confirm Password
             </label>
-            <%= f.password_field :password_confirmation, class: "input", placeholder: "Confirm password" %>
+            <div class="w-full">
+              <%= f.password_field :password_confirmation, class: "input w-full", placeholder: "Confirm password" %>
+            </div>
           </div>
         </div>
       </div>
