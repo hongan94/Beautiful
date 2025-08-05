@@ -44,7 +44,6 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_path, notice: 'User was successfully deleted.'
   end
 
-
   def update_status
     status = params[:status]
 
@@ -59,6 +58,18 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def export_excel
+    @users = User.all
+    @users = @users.where(id: params[:ids]) if params[:ids].present?
+    # Ensure that the MIME type for .xlsx is registered in an initializer, e.g.:
+    # Mime::Type.register "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", :xlsx
+    respond_to do |format|
+      format.xlsx do
+        response.headers['Content-Disposition'] = "attachment; filename=users_#{Time.now.strftime('%Y%m%d_%H%M%S')}.xlsx"
+        # The template for xlsx should be rendered here (e.g., export_excel.xlsx.axlsx)
+      end
+    end
+  end
 
   private
 

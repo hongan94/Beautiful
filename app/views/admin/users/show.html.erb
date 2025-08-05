@@ -1,0 +1,100 @@
+      <!-- Beautiful SaaS Users Dashboard -->
+     <div class="container-fixed" id="content_container"></div>
+
+     <div class="container-fixed">
+       <div class="flex flex-wrap items-center lg:items-end justify-between gap-7 pb-10">
+         <div class="flex flex-col justify-center gap-3">
+           <h1 class="text-2xl font-bold leading-tight text-primary">
+             User Detail 
+           </h1>
+         </div>
+       </div>
+     </div>
+
+     <div class="container-fixed">
+      <!-- begin: grid -->
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-7.5">
+        <!-- Left Column: Profile Card -->
+        <div class="col-span-1">
+          <div class="card min-w-full">
+            <div class="card-header flex items-center gap-4">
+              <div class="flex-shrink-0">
+                <% if @user.avatar_url.present? %>
+                  <%= image_tag @user.avatar_url, alt: @user.name, class: "size-16 rounded-full border-2 border-success shadow-lg object-cover" %>
+                <% else %>
+                  <%= image_tag "avatars/blank.png", alt: "No avatar", class: "size-16 rounded-full border-2 border-gray-300 shadow-lg object-cover" %>
+                <% end %>
+              </div>
+              <div>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-1"><%= @user.name %></h2>
+                <span class="badge badge-sm badge-outline badge-success mb-1">Available now</span>
+                <div class="text-gray-500 text-sm"><%= @user.email_address %></div>
+              </div>
+            </div>
+            <div class="card-table scrollable-x-auto pb-3 mt-4">
+              <table class="table align-middle text-sm text-gray-500">
+                <tr>
+                  <td class="py-2 min-w-28 text-gray-600 font-normal">Phone</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm" colspan="2">
+                    <%= @user.phone_number.presence || "No phone number" %>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2 text-gray-600 font-normal">Gender</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm" colspan="2">
+                    <%= @user.gender %>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2 text-gray-600 font-normal">Address</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm" colspan="2">
+                    <%= @user.address %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- Right Column: Settings Card -->
+        <div class="col-span-1">
+          <div class="card min-w-full">
+            <div class="card-header flex items-center justify-between">
+              <h3 class="card-title">Account Settings</h3>
+            </div>
+            <div class="card-table scrollable-x-auto pb-3">
+              <table class="table align-middle text-sm text-gray-500">
+                <tr>
+                  <td class="py-2 min-w-36 text-gray-600 font-normal">First Name</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm"><%= @user.first_name %></td>
+                </tr>
+                <tr>
+                  <td class="py-2 min-w-36 text-gray-600 font-normal">Last Name</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm"><%= @user.last_name %></td>
+                </tr>
+                <tr>
+                  <td class="py-2 min-w-36 text-gray-600 font-normal">Status</td>
+                  <td class="py-2 text-gray-800 font-normal text-sm">
+                    <span class="badge badge-outline badge-success"><%= @user.status.to_s.upcase %></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2 min-w-36 text-gray-600 font-normal">Change information</td>
+                  <td class="py-2 text-gray-700 font-normal">
+                    <%= link_to 'Edit Manager', edit_admin_manager_path(@user), class: 'btn btn-sm btn-primary ml-2' %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <style>
+            .start-now-bg {
+              background-image: url('assets/media/images/2600x1200/bg-5.png');
+            }
+            .dark .start-now-bg {
+              background-image: url('assets/media/images/2600x1200/bg-5-dark.png');
+            }
+          </style>
+        </div>
+      </div>
+      <!-- end: grid -->
+     </div>

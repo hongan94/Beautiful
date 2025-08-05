@@ -1,0 +1,34 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Managers") do |sheet|
+  # Header row
+  sheet.add_row [
+    "ID",
+    "Email Address",
+    "First Name",
+    "Last Name",
+    "Phone Number",
+    "Gender",
+    "Address",
+    "Status",
+    "Created At",
+    "Updated At",
+  ]
+
+  # Data rows
+  @managers.each do |manager|
+    sheet.add_row [
+      manager.id,
+      manager.email_address,
+      manager.first_name,
+      manager.last_name,
+      manager.phone_number,
+      manager.gender,
+      manager.address,
+      manager.status,
+      manager.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+      manager.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+    ]
+  end
+end
+

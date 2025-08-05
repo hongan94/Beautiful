@@ -21,6 +21,19 @@ class Admin::ManagersController < ApplicationController
   def edit
   end
 
+  def export_excel
+    @managers = Manager.all
+    @managers = @managers.where(id: params[:ids]) if params[:ids].present?
+    # Ensure that the MIME type for .xlsx is registered in an initializer, e.g.:
+    # Mime::Type.register "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", :xlsx
+    respond_to do |format|
+      format.xlsx do
+        response.headers['Content-Disposition'] = "attachment; filename=managers_#{Time.now.strftime('%Y%m%d_%H%M%S')}.xlsx"
+        # The template for xlsx should be rendered here (e.g., export_excel.xlsx.axlsx)
+      end
+    end
+  end
+  
   def create
     @manager = Manager.new(manager_params)
 

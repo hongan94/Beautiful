@@ -23,11 +23,15 @@ Rails.application.routes.draw do
     resources :managers do 
       collection do 
         put :update_status
+        get :export_excel
+        post :import_excel
       end 
     end 
     resources :users do 
       collection do 
         put :update_status
+        get :export_excel
+        post :import_excel
       end 
     end 
     resources :genres

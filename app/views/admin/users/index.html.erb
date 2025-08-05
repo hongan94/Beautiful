@@ -13,6 +13,10 @@
              <svg class="inline-block w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 16v-8m0 0l-4 4m4-4l4 4"></path></svg>
              Import CSV
            </a>
+           <%= button_to '#', method: :get, class: "btn btn-sm btn-light border border-gray-300 shadow-sm hover:bg-gray-100 transition", id: "export-excel-btn", form: { id: "export-excel-form", style: "display:inline" }, data: { export_url: export_excel_admin_users_path(format: :xlsx) } do %>
+             <svg class="inline-block w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg>
+             Export Excel
+           <% end %>
            <a class="btn btn-sm btn-primary shadow-md hover:bg-primary-dark transition" href="#">
              <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
              Add Member
