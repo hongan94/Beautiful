@@ -1,0 +1,162 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+  <div class="card p-5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-500 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">User Growth</h3>
+    <canvas id="chart1"></canvas>
+  </div>
+  <div class="card p-5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-500 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Revenue</h3>
+    <canvas id="chart2"></canvas>
+  </div>
+  <div class="card p-5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-500 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+    <div class="flex flex-col items-center justify-center">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 self-start">Device Usage</h3>
+      <div class="w-2/3">
+        <canvas id="chart3"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="card p-5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-500 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+    <div class="flex flex-col items-center justify-center">
+      <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 self-start">Engagement Activity</h3>
+      <div class="w-full">
+        <canvas id="chart4"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature 4: System Health Hub -->
+  <div class="card p-6 border border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-500 rounded-xl shadow-sm col-span-1 md:col-span-2">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <i class="ki-filled ki-shield-search text-primary"></i> 
+        System Health & Performance
+      </h3>
+      <span class="badge badge-success badge-outline">All Systems Operational</span>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="flex flex-col gap-2 p-4 rounded-lg bg-gray-50 dark:bg-coal-600/50 border border-gray-100 dark:border-gray-700">
+        <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">Server Uptime</span>
+        <div class="flex items-end gap-2">
+          <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">99.9%</span>
+          <span class="text-xs text-success font-semibold mb-1">+0.02%</span>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-coal-700 rounded-full h-1.5 mt-2">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 95%"></div>
+        </div>
+      </div>
+      
+      <div class="flex flex-col gap-2 p-4 rounded-lg bg-gray-50 dark:bg-coal-600/50 border border-gray-100 dark:border-gray-700">
+        <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">Memory Usage</span>
+        <div class="flex items-end gap-2">
+          <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">420MB</span>
+          <span class="text-xs text-gray-400 font-semibold mb-1">of 1GB</span>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-coal-700 rounded-full h-1.5 mt-2">
+          <div class="bg-warning h-1.5 rounded-full" style="width: 42%"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2 p-4 rounded-lg bg-gray-50 dark:bg-coal-600/50 border border-gray-100 dark:border-gray-700">
+        <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">Response Time</span>
+        <div class="flex items-end gap-2">
+          <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">124ms</span>
+          <span class="text-xs text-success font-semibold mb-1">-12ms</span>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-coal-700 rounded-full h-1.5 mt-2">
+          <div class="bg-success h-1.5 rounded-full" style="width: 88%"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2 p-4 rounded-lg bg-gray-50 dark:bg-coal-600/50 border border-gray-100 dark:border-gray-700">
+        <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">Active Workers</span>
+        <div class="flex items-end gap-2">
+          <span class="text-2xl font-bold text-gray-800 dark:text-gray-100">8 / 12</span>
+          <span class="text-xs text-primary font-semibold mb-1">Healthy</span>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-coal-700 rounded-full h-1.5 mt-2">
+          <div class="bg-info h-1.5 rounded-full" style="width: 66%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700">
+       <div class="flex items-center justify-between mb-4">
+         <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Quick Actions</h4>
+       </div>
+       <div class="flex flex-wrap gap-2">
+         <button class="btn btn-sm btn-light border-gray-200 dark:border-gray-600 dark:bg-coal-600 flex items-center gap-2">
+           <i class="ki-filled ki-arrows-circle text-gray-500"></i> Refresh Cache
+         </button>
+         <button class="btn btn-sm btn-light border-gray-200 dark:border-gray-600 dark:bg-coal-600 flex items-center gap-2">
+           <i class="ki-filled ki-data text-gray-500"></i> View DB Status
+         </button>
+         <button class="btn btn-sm btn-light border-gray-200 dark:border-gray-600 dark:bg-coal-600 flex items-center gap-2">
+           <i class="ki-filled ki-chart-line text-gray-500"></i> Traffic Logs
+         </button>
+       </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    new Chart(document.getElementById('chart1'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{ 
+          label: 'Users', 
+          data: [120, 190, 130, 250, 320, 430], 
+          borderColor: '#3b82f6', 
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+    new Chart(document.getElementById('chart2'), {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{ 
+          label: 'Revenue', 
+          data: [1200, 1900, 1100, 2500, 2200, 3100], 
+          backgroundColor: '#10b981',
+          borderRadius: 4
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+    new Chart(document.getElementById('chart3'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Desktop', 'Mobile', 'Tablet'],
+        datasets: [{ 
+          data: [45, 40, 15], 
+          backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+    new Chart(document.getElementById('chart4'), {
+      type: 'radar',
+      data: {
+        labels: ['Features', 'UI/UX', 'Support', 'Pricing', 'Performance', 'Reliability'],
+        datasets: [{ 
+          label: 'Current Year', 
+          data: [85, 90, 75, 80, 85, 95], 
+          backgroundColor: 'rgba(139, 92, 246, 0.2)', 
+          borderColor: '#8b5cf6',
+          pointBackgroundColor: '#8b5cf6'
+        }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, elements: { line: { borderWidth: 3 } } }
+    });
+  });
+</script>

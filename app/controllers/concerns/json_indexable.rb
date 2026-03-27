@@ -22,10 +22,21 @@ module JsonIndexable
     end
 
     records = records.filter_records(params) if model.respond_to?(:filter_records)
-    records = records.order(id: :desc)
+
     page = params[:page].present? ? params[:page].to_i : 1
-    size = params[:size].present? ? params[:size].to_i : 5
-    pagy, items = pagy(records, page: page, limit: size)
-    render json: { data: blueprint_class.render_as_hash(items), totalCount: pagy.count }
+    size = params[:size].present? ? params[:size].to_i : 50
+    pagy_vars = { page: page, limit: size }
+    is_searchkick = records.is_a?(Searchkick::Results) || 
+                    (defined?(Searchkick::Relation) && records.is_a?(Searchkick::Relation)) || 
+                    records.class.name.include?('Searchkick') ||
+                    (records.is_a?(Array) && records.first.respond_to?(:searchkick_index))
+    
+    if is_searchkick
+      pagy, items = pagy_searchkick(records, **pagy_vars)
+    else
+      records = records.order(id: :desc) if records.respond_to?(:order)
+      pagy, items = pagy(records, **pagy_vars)
+    end
+    render json: { data: blueprint_class.render_as_hash(items.to_a), totalCount: pagy.count }
   end
 end

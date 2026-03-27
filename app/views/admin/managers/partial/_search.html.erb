@@ -1,20 +1,21 @@
-<div class="card-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 bg-gradient-to-r from-white via-gray-50 to-white rounded-t-lg shadow-sm">
-  <h3 class="card-title font-semibold text-base text-primary flex items-center gap-2">
+<div class="card-header flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-5 bg-gray-50/50 dark:bg-coal-700/50 border-b border-gray-200 dark:border-gray-700">
+  <h3 class="card-title font-semibold text-base text-gray-900 dark:text-gray-100 flex items-center gap-2">
+    <i class="ki-filled ki-magnifier text-primary"></i> Search & Filters
   </h3>
   <div class="flex flex-wrap items-center gap-3">
     <div class="relative">
-      <input class="input input-sm pl-8" data-datatable-search="#managers_table" placeholder="Search Managers" type="text"> 
-      <span class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400">
-        <i class="ki-filled ki-magnifier text-lg"></i>
+      <input class="input input-sm pl-9 bg-white dark:bg-coal-600 border-gray-200 dark:border-gray-700 dark:text-gray-300" data-datatable-search="#managers_table" placeholder="Search Managers..." type="text"> 
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <i class="ki-filled ki-magnifier text-sm"></i>
       </span>
     </div>
     <div class="flex flex-wrap gap-2.5">
-      <select class="select select-sm w-28 rounded-lg border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary bg-white shadow search-status">
+      <select class="select select-sm w-32 bg-white dark:bg-coal-600 border-gray-200 dark:border-gray-700 dark:text-gray-300 rounded-lg shadow-sm search-status">
         <option value="">All Status</option>
         <option value="active">Active</option>
         <option value="inactive">Inactive</option>
       </select>
-      <select class="select select-sm w-28 rounded-lg border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary bg-white shadow sort-by">
+      <select class="select select-sm w-32 bg-white dark:bg-coal-600 border-gray-200 dark:border-gray-700 dark:text-gray-300 rounded-lg shadow-sm sort-by">
         <option value="">Sort By</option>
         <option value="latest">Latest</option>
         <option value="oldest">Oldest</option>

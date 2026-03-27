@@ -1,0 +1,73 @@
+<div class="card bg-white dark:bg-coal-600 shadow-sm rounded-2xl border border-gray-200 dark:border-gray-700">
+  <%= form_with(model: [:admin, category], local: true, class: "") do |form| %>
+    <div class="p-8 lg:p-10 space-y-10">
+      <% if category.errors.any? %>
+        <div class="bg-danger/10 text-danger p-4 rounded-xl mb-4 border border-danger/20">
+          <h2 class="font-bold mb-2 flex items-center uppercase text-xs tracking-wider"><i class="ki-filled ki-warning-2 text-lg me-2"></i> Fix these issues:</h2>
+          <ul class="list-disc list-inside text-sm ms-2">
+            <% category.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Core Configuration -->
+      <div class="space-y-8">
+        <div class="flex items-center gap-2 pb-2 border-b border-gray-100 dark:border-gray-700">
+          <i class="ki-filled ki-category text-primary text-2xl"></i>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Category Profile</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+          <div class="space-y-2">
+            <%= form.label :name, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+            <%= form.text_field :name, class: "input w-full h-11 px-4 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all", placeholder: "e.g. Technology", required: true %>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :slug, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+            <%= form.text_field :slug, class: "input w-full h-11 px-4 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all", placeholder: "custom-url-slug" %>
+          </div>
+          
+          <div class="md:col-span-2 space-y-2">
+            <%= form.label :parent_id, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+            <%= form.collection_select :parent_id, Category.where.not(id: category.id), :id, :name, { include_blank: "Top Level (No Parent)" }, class: "select w-full h-11 rounded-xl" %>
+          </div>
+
+          <div class="md:col-span-2 space-y-2">
+            <%= form.label :description, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+            <%= form.text_area :description, rows: 3, class: "input w-full p-4 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all", placeholder: "Briefly describe the purpose of this category..." %>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Meta Management -->
+      <div class="space-y-8 pt-4">
+        <div class="flex items-center gap-2 pb-2 border-b border-gray-100 dark:border-gray-700">
+          <i class="ki-filled ki-ranking text-primary text-2xl"></i>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">SEO Settings</h3>
+        </div>
+
+        <%= form.fields_for :seo_meta do |seo| %>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6">
+            <div class="md:col-span-2 space-y-2">
+              <%= seo.label :meta_title, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+              <%= seo.text_field :meta_title, class: "input w-full h-11 px-4 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all", placeholder: "Optimized title for search engines" %>
+            </div>
+            <div class="md:col-span-2 space-y-2">
+              <%= seo.label :meta_description, class: "text-sm font-semibold text-gray-700 dark:text-gray-300" %>
+              <%= seo.text_area :meta_description, rows: 2, class: "input w-full p-4 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all", placeholder: "Compelling meta description for search results..." %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="px-8 py-6 flex items-center justify-end gap-3 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-coal-700/30 rounded-b-2xl">
+      <a href="<%= admin_categories_path %>" class="btn btn-sm btn-light dark:btn-coal text-gray-500 font-bold hover:text-primary transition-colors">Cancel</a>
+      <button type="submit" class="btn btn-sm btn-primary px-6 font-bold shadow-sm">
+         <%= category.persisted? ? "Update Metadata" : "Create Category" %>
+      </button>
+    </div>
+  <% end %>
+</div>

@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require_relative "../app/middleware/rate_limiter"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,7 +19,8 @@ module Beautiful
     config.assets.paths << Rails.root.join("app/assets/media")
     config.assets.paths << Rails.root.join("app/assets/images")
     config.assets.paths << Rails.root.join("app/assets/fonts")
-
+    config.middleware.use RateLimiter
+    config.active_storage.variant_processor = :mini_magick
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

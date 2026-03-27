@@ -1,0 +1,36 @@
+<div class="container-fixed p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Activity Logs</h1>
+  </div>
+
+  <div class="bg-white dark:bg-coal-500 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
+    <table class="table w-full text-left align-middle text-gray-600 dark:text-gray-300">
+      <thead class="bg-gray-50 dark:bg-coal-600/50 border-b border-gray-200 dark:border-gray-700 text-xs uppercase font-medium text-gray-500">
+        <tr>
+          <th class="py-3 px-6">Date / Time</th>
+          <th class="py-3 px-6">User</th>
+          <th class="py-3 px-6">Action</th>
+          <th class="py-3 px-6">Resource ID</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <% @logs.each do |log| %>
+          <tr class="transition-colors border-b border-gray-100 dark:border-gray-700/50">
+            <td class="py-4 px-6 text-sm whitespace-nowrap"><%= log.created_at.strftime("%b %d, %Y %H:%M:%S") %></td>
+            <td class="py-4 px-6 text-sm font-medium flex items-center gap-2">
+              <span class="size-6 bg-primary/10 text-primary rounded-full flex items-center justify-center font-bold text-xs"><%= log.user&.first_name&.first || 'S' %></span>
+              <%= log.user ? log.user.name : "System" %>
+            </td>
+            <td class="py-4 px-6 text-sm">
+              <span class="px-2 py-1 bg-gray-100 dark:bg-coal-600 rounded text-xs"><%= log.action %></span>
+            </td>
+            <td class="py-4 px-6 text-sm"><%= log.trackable_type %> #<%= log.trackable_id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @logs.empty? %>
+      <div class="text-center py-8 text-gray-500">No activity recorded yet.</div>
+    <% end %>
+  </div>
+</div>

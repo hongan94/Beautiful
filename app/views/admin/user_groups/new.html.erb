@@ -1,0 +1,12 @@
+<div class="container-fixed p-6">
+  <div class="mb-6 flex items-center">
+    <a href="<%= admin_user_groups_path %>" class="text-gray-500 hover:text-primary me-4">
+      <i class="ki-filled ki-arrow-left text-xl"></i>
+    </a>
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">New User Group</h1>
+  </div>
+  
+  <div class="bg-white dark:bg-coal-500 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
+    <%= render 'form', user_group: @user_group, permissions: @permissions %>
+  </div>
+</div>

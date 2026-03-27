@@ -1,0 +1,98 @@
+<div class="container-fixed p-6 lg:p-8 space-y-8">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="space-y-1">
+      <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Articles</h1>
+      <p class="text-sm font-medium text-gray-500">Manage and publish your stories to the world</p>
+    </div>
+    <a href="<%= new_admin_article_path %>" class="btn btn-primary px-6 py-3 rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
+      <i class="ki-filled ki-plus me-2 text-lg"></i> Create Post
+    </a>
+  </div>
+
+  <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="table w-full text-left align-middle">
+        <thead class="bg-gray-50/50 dark:bg-coal-700/50 border-b border-gray-100 dark:border-gray-700">
+          <tr>
+            <th class="py-5 px-8 text-2xs font-bold text-gray-400 uppercase tracking-widest">Story</th>
+            <th class="py-5 px-6 text-2xs font-bold text-gray-400 uppercase tracking-widest">Section</th>
+            <th class="py-5 px-6 text-center text-2xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
+            <th class="py-5 px-6 text-center text-2xs font-bold text-gray-400 uppercase tracking-widest">Date</th>
+            <th class="py-5 px-8 text-right text-2xs font-bold text-gray-400 uppercase tracking-widest">Controls</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+          <% @articles.each do |article| %>
+            <% border_color = case article.status; when 'published'; 'border-l-emerald-500'; when 'draft'; 'border-l-amber-500'; else; 'border-l-slate-300'; end %>
+            <tr class="hover:bg-gray-50/80 dark:hover:bg-coal-700/30 transition-all group border-l-4 <%= border_color %>">
+              <td class="py-5 px-8">
+                <div class="flex items-center gap-4">
+                  <div class="size-16 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm shrink-0">
+                    <% if article.cover_image.attached? %>
+                      <%= image_tag article.cover_image, class: "size-full object-cover group-hover:scale-110 transition-transform duration-500" %>
+                    <% else %>
+                      <div class="size-full bg-gray-100 dark:bg-coal-700 flex items-center justify-center">
+                        <i class="ki-filled ki-picture text-gray-300 dark:text-gray-500 text-2xl"></i>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="font-black text-gray-900 dark:text-gray-100 leading-tight group-hover:text-primary transition-colors"><%= article.title %></div>
+                    <div class="text-xs font-medium text-gray-400 flex items-center gap-1">
+                      <i class="ki-filled ki-link text-[10px] text-primary/50"></i> <%= article.slug %>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-5 px-6">
+                <% if article.category %>
+                  <span class="badge badge-sm badge-outline badge-primary font-bold px-3 py-1 bg-primary/5 border-primary/20 text-primary">
+                    <i class="ki-filled ki-category text-[10px] me-1"></i>
+                    <%= article.category.name %>
+                  </span>
+                <% else %>
+                  <span class="text-xs font-bold text-gray-300 uppercase tracking-tighter italic">General</span>
+                <% end %>
+              </td>
+              <td class="py-5 px-6 text-center">
+                <% case article.status %>
+                <% when 'published' %>
+                  <span class="badge badge-sm bg-emerald-500 text-white font-black uppercase tracking-widest px-3 py-1 shadow-sm shadow-emerald-200">Live</span>
+                <% when 'draft' %>
+                  <span class="badge badge-sm bg-amber-500 text-white font-black uppercase tracking-widest px-3 py-1 shadow-sm shadow-amber-200">Draft</span>
+                <% else %>
+                  <span class="badge badge-sm bg-slate-500 text-white font-black uppercase tracking-widest px-3 py-1 shadow-sm shadow-slate-200">Archive</span>
+                <% end %>
+              </td>
+              <td class="py-5 px-6 text-center">
+                <div class="text-sm font-bold text-gray-700 dark:text-gray-300">
+                  <i class="ki-filled ki-calendar text-xs text-primary/40 me-1"></i>
+                  <%= article.published_at ? article.published_at.strftime("%b %d") : "-" %>
+                </div>
+                <div class="text-2xs font-medium text-gray-400">
+                   <%= article.published_at ? article.published_at.strftime("%Y") : "" %>
+                </div>
+              </td>
+              <td class="py-5 px-8 text-right">
+                <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                  <a href="<%= edit_admin_article_path(article) %>" class="size-9 flex items-center justify-center bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-xl transition-all shadow-sm">
+                    <i class="ki-filled ki-pencil text-lg"></i>
+                  </a>
+                  <%= button_to admin_article_path(article), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "size-9 flex items-center justify-center bg-danger/10 text-danger hover:bg-danger hover:text-white rounded-xl transition-all shadow-sm" do %>
+                    <i class="ki-filled ki-trash text-lg"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <% if @articles.empty? %>
+      <div class="text-center py-12">
+        <i class="ki-filled ki-notepad-edit text-5xl text-gray-300 dark:text-gray-600 mb-4 block"></i>
+        <p class="text-gray-500 dark:text-gray-400">No articles yet. Start writing your first post!</p>
+      </div>
+    <% end %>
+  </div>
+</div>

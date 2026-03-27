@@ -1,0 +1,173 @@
+<div class="container-fixed pb-24">
+  <!-- Minimalist Header System -->
+  <div class="flex flex-col gap-10">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="size-10 rounded-xl bg-primary/5 flex items-center justify-center">
+           <i class="ki-filled ki-picture text-2xl text-primary"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black text-gray-900 dark:text-white leading-tight">Media Vault</h1>
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"><%= pluralize(@media.count, "Asset") %> in safe storage</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+         <%= form_with model: [:admin, Medium.new], local: true, class: "flex items-center gap-2", id: "media-upload-form" do |f| %>
+           <%= f.file_field :file, class: "hidden", id: "bulk-upload", onchange: "this.form.submit()" %>
+           <label for="bulk-upload" class="btn btn-sm btn-primary h-9 px-5 rounded-lg font-bold transition-all cursor-pointer shadow-sm hover:shadow-primary/20 text-xs">
+             <i class="ki-filled ki-plus me-1"></i> Add Asset
+           </label>
+         <% end %>
+      </div>
+    </div>
+
+    <!-- Clean Global Search Area -->
+    <div class="bg-gray-50/50 dark:bg-coal-700/50 p-5 rounded-2xl border border-gray-100 dark:border-coal-100/20">
+      <div class="relative w-full max-w-xl mx-auto">
+        <i class="ki-filled ki-magnifier absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" placeholder="Filter library..." class="input h-11 pl-12 pr-6 rounded-xl border-none shadow-sm focus:shadow-md transition-all font-medium text-sm w-full">
+      </div>
+    </div>
+  </div>
+
+  <!-- Locked 4-Column Grid -->
+  <div id="media-grid" class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-12 mt-16 max-w-6xl mx-auto">
+    <!-- Empty Upload State -->
+    <label for="bulk-upload" class="group aspect-square rounded-xl border-2 border-dashed border-gray-200 dark:border-coal-100/20 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-gray-50 hover:border-primary/50 transition-all bg-white shadow-sm">
+       <div class="size-10 rounded-lg bg-gray-50 dark:bg-coal-700 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
+          <i class="ki-filled ki-cloud-change text-xl text-gray-300 group-hover:text-primary transition-colors"></i>
+       </div>
+       <span class="text-[9px] font-black text-gray-300 group-hover:text-primary uppercase tracking-widest">Ingest File</span>
+    </label>
+
+    <% @media.each do |medium| %>
+      <div class="group relative flex flex-col bg-white dark:bg-coal-600 rounded-xl border border-gray-100 dark:border-coal-100/20 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/[0.05] transition-all duration-300 hover:-translate-y-1">
+        <!-- Visual Section (Square) -->
+        <div class="aspect-square bg-gray-50 dark:bg-coal-700 flex items-center justify-center overflow-hidden relative cursor-default">
+          <% if medium.image? && medium.file.attached? %>
+            <%= image_tag medium.file, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", loading: "lazy" %>
+          <% else %>
+            <div class="flex flex-col items-center gap-3">
+               <div class="size-12 rounded-xl bg-white dark:bg-coal-600 flex items-center justify-center shadow-sm border border-gray-100 dark:border-coal-100/20">
+                  <i class="<%= medium.icon_class %> text-2xl text-gray-400"></i>
+               </div>
+               <span class="badge badge-sm bg-gray-100 dark:bg-coal-800 text-gray-500 font-bold uppercase text-[7px] tracking-thinner"><%= medium.file_type&.split('/')&.last %></span>
+            </div>
+          <% end %>
+
+          <!-- Subtle Quick Toolbar -->
+          <div class="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <a href="<%= url_for(medium.file) %>" target="_blank" class="size-7 flex items-center justify-center bg-white/90 dark:bg-coal-800/90 text-gray-700 dark:text-gray-200 rounded-md shadow-md backdrop-blur-sm hover:text-primary transition-colors">
+              <i class="ki-filled ki-eye text-sm"></i>
+            </a>
+            <%= button_to admin_medium_path(medium), method: :delete, data: { turbo_confirm: "Permanently purge this asset?" }, class: "size-7 flex items-center justify-center bg-white/90 dark:bg-coal-800/90 text-gray-700 dark:text-gray-200 rounded-md shadow-md backdrop-blur-sm hover:text-danger transition-colors" do %>
+              <i class="ki-filled ki-trash text-sm"></i>
+            <% end %>
+          </div>
+        </div>
+        
+        <!-- Metadata Section (Thin Footer) -->
+        <div class="p-4 bg-white dark:bg-coal-600 border-t border-gray-50 dark:border-coal-100/10">
+          <div class="text-[10px] font-black text-gray-950 dark:text-white truncate" title="<%= medium.name %>"><%= medium.name %></div>
+          <div class="text-[8px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">
+            <%= number_to_human_size(medium.size) %> • <%= medium.file_type&.split('/')&.last %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const grid = document.getElementById('media-grid');
+    const form = document.getElementById('media-upload-form');
+    const input = document.getElementById('bulk-upload');
+
+    if (grid && form && input) {
+      grid.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        grid.classList.add('opacity-50');
+      });
+      
+      grid.addEventListener('dragleave', () => {
+        grid.classList.remove('opacity-50');
+      });
+
+      grid.addEventListener('drop', (e) => {
+        e.preventDefault();
+        grid.classList.remove('opacity-50');
+        input.files = e.dataTransfer.files;
+        form.submit();
+      });
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const grid = document.getElementById('media-grid');
+    const form = document.getElementById('media-upload-form');
+    const input = document.getElementById('bulk-upload');
+
+    if (grid && form && input) {
+      grid.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        grid.classList.add('bg-primary/[0.02]');
+      });
+      
+      grid.addEventListener('dragleave', () => {
+        grid.classList.remove('bg-primary/[0.02]');
+      });
+
+      grid.addEventListener('drop', (e) => {
+        e.preventDefault();
+        grid.classList.remove('bg-primary/[0.02]');
+        input.files = e.dataTransfer.files;
+        form.submit();
+      });
+    }
+  });
+</script>
+
+<script>
+  // Advanced Drag & Drop + Interaction Visuals
+  document.addEventListener('turbo:load', function() {
+    const grid = document.getElementById('media-grid');
+    const form = document.getElementById('media-upload-form');
+    const input = document.getElementById('bulk-upload');
+
+    if (grid && form && input) {
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        grid.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        grid.addEventListener(eventName, () => {
+          grid.classList.add('scale-[0.99]', 'bg-primary/[0.01]');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        grid.addEventListener(eventName, () => {
+          grid.classList.remove('scale-[0.99]', 'bg-primary/[0.01]');
+        }, false);
+      });
+
+      grid.addEventListener('drop', handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        input.files = files;
+        form.submit();
+      }
+    }
+  });
+</script>

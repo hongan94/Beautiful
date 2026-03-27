@@ -72,6 +72,9 @@ export class KTTheme extends KTComponent implements KTThemeInterface {
 
     this._fireEvent('changed', {});
     this._dispatchEvent('changed', {});
+
+    // Reload page to apply theme changes completely
+    window.location.reload();
   }
 
   protected _getMode(): KTThemeModeType {
@@ -118,13 +121,13 @@ export class KTTheme extends KTComponent implements KTThemeInterface {
   public static getInstance(element: HTMLElement): KTTheme {
     if (!element) return null;
 
-		if (KTData.has(element, 'theme')) {
-			return KTData.get(element, 'theme') as KTTheme;
-		}
+    if (KTData.has(element, 'theme')) {
+      return KTData.get(element, 'theme') as KTTheme;
+    }
 
-		if (element.getAttribute('data-theme') !== "false") {
-			return new KTTheme(element);
-		}
+    if (element.getAttribute('data-theme') !== "false") {
+      return new KTTheme(element);
+    }
 
     return null;
   }

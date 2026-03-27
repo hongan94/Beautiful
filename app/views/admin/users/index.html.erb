@@ -4,33 +4,37 @@
      <div class="container-fixed">
        <div class="flex flex-wrap items-center lg:items-end justify-between gap-7 pb-10">
          <div class="flex flex-col justify-center gap-3">
-           <h1 class="text-2xl font-bold leading-tight text-primary">
+           <h1 class="text-2xl font-bold leading-tight text-gray-900 dark:text-white">
              Users
            </h1>
          </div>
          <div class="flex items-center gap-3">
-           <%= button_to '#', method: :get, class: "btn btn-sm btn-light border border-gray-300 shadow-sm hover:bg-gray-100 transition", id: "export-excel-btn", form: { id: "export-excel-form", style: "display:inline" }, data: { export_url: export_excel_admin_users_path(format: :xlsx) } do %>
-             <svg class="inline-block w-4 h-4 mr-1 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg>
+           <%= button_to '#', method: :get, class: "btn btn-sm btn-light dark:bg-coal-400 dark:border-gray-700 dark:text-gray-300", id: "export-excel-btn", form: { id: "export-excel-form", style: "display:inline" }, data: { export_url: export_excel_admin_users_path(format: :xlsx) } do %>
+             <i class="ki-filled ki-file text-primary me-1 text-lg"></i>
              Export Excel
            <% end %>
-           <a class="btn btn-sm btn-primary shadow-md hover:bg-primary-dark transition" href="#">
-             <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+           <a class="btn btn-sm btn-primary py-2 px-4 rounded-lg shadow-sm font-medium flex items-center transition-colors hover:bg-primary-active" href="<%= new_admin_user_path %>">
+             <i class="ki-filled ki-plus me-1 text-lg"></i>
              Add User
            </a>
          </div>
        </div>
      </div>
 
+     <%= render 'admin/shared/notify', notice: notice, alert: alert %>
+
      <div class="container-fixed">
        <div class="grid gap-7 lg:gap-10">
-         <div class="card card-grid min-w-full shadow-lg rounded-lg border border-gray-100">
+         <div class="card card-grid min-w-full bg-white dark:bg-coal-600 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
            <%= render 'admin/users/partial/search' %>
-           <div class="card-body bg-white rounded-b-lg">
+           <div class="card-body bg-transparent p-0">
              <div data-datatable="true" data-datatable-page-size="10" id="users_table">
-               <div class="scrollable-x-auto rounded-lg border border-gray-100 shadow-inner">
+               <div class="scrollable-x-auto">
                  <%= render 'admin/users/partial/table' %>
                </div>
-               <%= render 'admin/users/partial/pagy' %>
+               <div class="p-5 border-t border-gray-200 dark:border-gray-700">
+                 <%= render 'admin/users/partial/pagy' %>
+               </div>
              </div>
            </div>
          </div>

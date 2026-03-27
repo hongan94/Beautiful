@@ -107,9 +107,9 @@
 # Pagy::DEFAULT[:searchkick_pagy_search] = :pagy_search
 # Default original :search method called internally to do the actual search
 # Pagy::DEFAULT[:searchkick_search] = :search
-# require 'pagy/extras/searchkick'
+require 'pagy/extras/searchkick'
 # uncomment if you are going to use Searchkick.pagy_search
-# Searchkick.extend Pagy::Searchkick
+Searchkick.extend Pagy::Searchkick
 
 
 # Frontend Extras
@@ -143,7 +143,7 @@
 
 # Limit extra: Allow the client to request a custom limit per page with an optional selector UI
 # See https://ddnexus.github.io/pagy/docs/extras/limit
-# require 'pagy/extras/limit'
+require 'pagy/extras/limit'
 # set to false only if you want to make :limit_extra an opt-in variable
 # Pagy::DEFAULT[:limit_extra] = false    # default true
 # Pagy::DEFAULT[:limit_param] = :limit   # default

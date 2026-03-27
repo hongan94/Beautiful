@@ -1,0 +1,71 @@
+<div class="container-fixed pb-10">
+  <div class="flex flex-wrap items-center lg:items-end justify-between gap-7 pb-10">
+    <div class="flex flex-col justify-center gap-3">
+      <h1 class="text-2xl font-bold leading-tight text-primary">API Gateway</h1>
+      <p class="text-sm text-gray-500 font-medium">Manage API access keys for external services.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a class="btn btn-sm btn-primary shadow-md hover:bg-primary-active transition" href="<%= new_admin_api_key_path %>">
+        <i class="ki-filled ki-plus me-1 text-lg"></i>
+        Generate New Key
+      </a>
+    </div>
+  </div>
+
+  <div class="grid gap-7 lg:gap-10">
+    <div class="card card-grid min-w-full shadow-lg rounded-lg border border-gray-100 dark:border-gray-700 bg-white dark:bg-coal-600">
+      <div class="card-body p-0">
+        <div class="scrollable-x-auto rounded-lg">
+          <table class="table table-auto w-full">
+            <thead class="bg-gray-50 dark:bg-coal-700/50">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Token</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Expires At</th>
+                <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+              <% @api_keys.each do |key| %>
+                <tr class="hover:bg-gray-50 dark:hover:bg-coal-500/50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 dark:text-gray-200"><%= key.name %></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-500 dark:text-gray-400">
+                    <code><%= key.token.truncate(15) %></code>
+                    <button class="btn btn-icon btn-xs btn-light ms-2" title="Copy to clipboard"><i class="ki-filled ki-copy text-sm"></i></button>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="badge badge-sm badge-outline badge-<%= key.active? ? 'success' : 'danger' %>">
+                      <%= key.status.capitalize %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= key.expires_at&.strftime("%Y-%m-%d %H:%M") || 'Never' %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex items-center justify-end gap-2">
+                      <a href="<%= edit_admin_api_key_path(key) %>" class="btn btn-icon btn-sm btn-light hover:text-primary transition-colors"><i class="ki-filled ki-notepad-edit"></i></a>
+                      <%= button_to admin_api_key_path(key), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-icon btn-sm btn-light hover:text-danger transition-colors" do %>
+                        <i class="ki-filled ki-trash"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+              <% if @api_keys.empty? %>
+                <tr>
+                  <td colspan="5" class="px-6 py-12 text-center">
+                    <div class="flex flex-col items-center gap-2">
+                      <i class="ki-filled ki-key text-4xl text-gray-300"></i>
+                      <p class="text-gray-500 font-medium">No API keys found. Generate one to see it here.</p>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

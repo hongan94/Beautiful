@@ -1,0 +1,303 @@
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+  <%= form_with(model: [:admin, @article], local: true, class: "lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-10") do |form| %>
+    <!-- Main Writing Column -->
+    <div class="lg:col-span-8 space-y-12">
+      <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+        <div class="p-10 lg:p-12 space-y-12">
+          <% if article.errors.any? %>
+            <div class="bg-danger/10 text-danger p-5 rounded-2xl border border-danger/20 mb-8">
+              <h2 class="text-sm font-bold flex items-center mb-1 uppercase tracking-wider"><i class="ki-filled ki-warning-2 text-lg me-2"></i> Fix form errors:</h2>
+              <ul class="list-disc list-inside text-xs ms-2 opacity-90"><% article.errors.full_messages.each { |msg| %><li><%= msg %></li><% } %></ul>
+            </div>
+          <% end %>
+
+          <div class="space-y-4 pb-8 border-b border-gray-100 dark:border-gray-700">
+             <%= form.label :title, class: "text-2xs font-bold text-gray-400 uppercase tracking-widest" %>
+             <%= form.text_field :title, class: "input w-full p-0 h-auto text-4xl lg:text-5xl font-black bg-transparent border-none focus:ring-0 placeholder:text-gray-200 dark:placeholder:text-gray-800 text-gray-900 dark:text-white tracking-tight leading-tight", placeholder: "Articulating your thoughts...", required: true %>
+          </div>
+
+          <div class="space-y-4">
+             <%= form.label :excerpt, class: "text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center" do %>
+                <i class="ki-filled ki-text-align-left text-gray-400 me-2 text-lg"></i> Brief Summary
+             <% end %>
+             <%= form.text_area :excerpt, rows: 3, class: "input w-full px-6 py-5 rounded-2xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-primary focus:border-primary transition-all text-base leading-relaxed font-normal", placeholder: "A short snippet for social sharing and lists..." %>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="space-y-6">
+             <%= form.label :content, class: "text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center" do %>
+                <i class="ki-filled ki-document text-gray-400 me-2 text-lg"></i> Narrative Content
+             <% end %>
+             <div class="relative rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                <%= form.hidden_field :content, id: "article_content_field" %>
+                <div id="quill_editor_container" class="bg-white dark:bg-coal-700 min-h-[600px]"></div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEO Optimization Card -->
+      <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+        <div class="p-10 lg:p-12 space-y-10">
+           <div class="flex items-center gap-2 pb-6 border-b border-gray-100 dark:border-gray-700">
+             <i class="ki-filled ki-ranking text-emerald-500 text-2xl"></i>
+             <h3 class="text-xl font-bold text-gray-900 dark:text-white uppercase tracking-tight">Search Engine Optimization</h3>
+           </div>
+           
+           <%= form.fields_for :seo_meta do |seo| %>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 mt-4">
+               <div class="md:col-span-2 space-y-2">
+                 <%= seo.label :meta_title, class: "text-sm font-bold text-gray-700 dark:text-gray-300" %>
+                 <%= seo.text_field :meta_title, class: "input w-full h-12 px-5 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-medium", placeholder: "SEO-friendly title" %>
+               </div>
+               <div class="md:col-span-2 space-y-2">
+                 <%= seo.label :meta_description, class: "text-sm font-bold text-gray-700 dark:text-gray-300" %>
+                 <%= seo.text_area :meta_description, rows: 3, class: "input w-full p-5 rounded-2xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-medium", placeholder: "What users see in Google results..." %>
+               </div>
+               <div class="space-y-2">
+                  <%= seo.label :meta_keywords, class: "text-sm font-bold text-gray-700 dark:text-gray-300" %>
+                  <%= seo.text_field :meta_keywords, class: "input w-full h-12 px-5 rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-medium", placeholder: "e.g. tech, ruby, code" %>
+               </div>
+               <div class="space-y-4">
+                  <%= seo.label :og_image, "Social Media Image (OpenGraph)", class: "text-sm font-bold text-gray-700 dark:text-gray-300" %>
+                  <div class="space-y-4">
+                    <div id="og_image_preview_container" class="hidden aspect-[1200/630] rounded-xl border border-emerald-100 dark:border-emerald-900/30 overflow-hidden bg-emerald-50/50 dark:bg-emerald-900/10 flex items-center justify-center">
+                       <img id="og_image_preview" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative">
+                       <%= seo.file_field :og_image, id: "og_image_input", class: "input w-full h-12 px-5 flex items-center py-2 text-xs cursor-pointer border-gray-200 dark:border-gray-700 bg-white dark:bg-coal-700 focus:border-emerald-500", accept: "image/*" %>
+                    </div>
+                  </div>
+               </div>
+             </div>
+           <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar Controls -->
+    <div class="lg:col-span-4 space-y-12">
+      <!-- Publishing Info Card -->
+      <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+        <div class="p-10 space-y-10">
+          <div class="flex items-center gap-2 pb-4 border-b border-gray-100 dark:border-gray-700">
+            <i class="ki-filled ki-send text-indigo-500 text-2xl"></i>
+            <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">Publication</h3>
+          </div>
+
+          <div class="space-y-8">
+            <div class="space-y-2">
+              <%= form.label :status, class: "text-sm font-bold text-gray-600 dark:text-gray-400" %>
+              <%= form.select :status, Article.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "select w-full h-12 rounded-xl border-gray-200 dark:border-gray-700 focus:border-indigo-500" %>
+            </div>
+            
+            <div class="space-y-2">
+              <%= form.label :published_at, class: "text-sm font-bold text-gray-600 dark:text-gray-400" %>
+              <%= form.datetime_field :published_at, class: "input w-full h-12 px-4 rounded-xl border-gray-200 dark:border-gray-700 focus:border-indigo-500", placeholder: "Scheduled for..." %>
+            </div>
+
+            <div class="space-y-2">
+               <%= form.label :slug, class: "text-sm font-bold text-gray-600 dark:text-gray-400" %>
+               <%= form.text_field :slug, class: "input w-full h-12 px-4 rounded-xl text-xs font-mono border-gray-200 dark:border-gray-700 focus:border-indigo-500", placeholder: "url-slug-here" %>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full py-5 px-6 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.03] active:scale-95 transition-all bg-gradient-to-r from-primary to-blue-600 border-none">
+            <i class="ki-filled ki-disk me-2 text-lg"></i> Deploy Content
+          </button>
+        </div>
+      </div>
+
+      <!-- Feature Visual Card -->
+      <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+         <div class="p-10 space-y-8">
+            <div class="flex items-center gap-2 pb-4 border-b border-gray-100 dark:border-gray-700">
+              <i class="ki-filled ki-picture text-rose-500 text-2xl"></i>
+              <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">Featured Visual</h3>
+            </div>
+            
+            <div class="group relative rounded-2xl overflow-hidden border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-coal-700/50 transition-all hover:border-rose-500/50 text-center cursor-pointer shadow-sm">
+              <div id="article_cover_preview_container" class="size-full flex items-center justify-center min-h-[160px]">
+                <% if article.cover_image.attached? %>
+                   <%= image_tag article.cover_image, id: "article_cover_preview", class: "w-full aspect-video object-cover block" %>
+                <% else %>
+                   <div class="py-12 px-4 text-center">
+                     <i id="article_cover_placeholder_icon" class="ki-filled ki-cloud-change text-4xl text-gray-300 mb-3 block"></i>
+                     <span class="text-xs font-black text-gray-400 tracking-widest uppercase">Select Cover Image</span>
+                   </div>
+                <% end %>
+              </div>
+              <%= form.file_field :cover_image, id: "article_cover_input", class: "absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10", accept: "image/*" %>
+              <div class="absolute inset-0 bg-rose-500/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white font-black text-xs uppercase tracking-widest pointer-events-none">
+                 <i class="ki-filled ki-arrows-loop me-2 text-xl"></i> Change Visual
+              </div>
+            </div>
+            <p class="text-xs text-center text-gray-400 font-medium">16:9 Aspect ratio recommended for blog covers</p>
+         </div>
+      </div>
+
+      <!-- Taxonomy Controls -->
+      <div class="card bg-white dark:bg-coal-600 shadow-sm border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden">
+         <div class="p-10 space-y-10">
+            <div class="flex items-center gap-2 pb-4 border-b border-gray-100 dark:border-gray-700">
+              <i class="ki-filled ki-folder text-amber-500 text-2xl"></i>
+              <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider">Classification</h3>
+            </div>
+            
+            <div class="space-y-8">
+              <div class="space-y-2">
+                <%= form.label :category_id, "Primary Section", class: "text-sm font-bold text-gray-600 dark:text-gray-400" %>
+                <%= form.collection_select :category_id, Category.all, :id, :name, { include_blank: "Loose Content (No Category)" }, class: "select w-full h-12 rounded-xl border-gray-200 dark:border-gray-700 focus:border-amber-500" %>
+              </div>
+
+              <div class="space-y-4">
+                 <%= form.label :tag_ids, "Topics & Tags", class: "text-sm font-bold text-gray-600 dark:text-gray-400" %>
+                 <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto p-5 bg-gray-50/50 dark:bg-coal-700/50 rounded-2xl border border-gray-100 dark:border-gray-700 custom-scrollbar">
+                    <%= form.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |b| %>
+                      <label class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-coal-600 rounded-xl border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-amber-500 transition-all group">
+                        <%= b.check_box class: "checkbox size-4 rounded-md text-amber-500 focus:ring-amber-500/20 border-gray-300 dark:border-gray-500" %>
+                        <span class="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-amber-500 transition-colors"><%= b.text %></span>
+                      </label>
+                    <% end %>
+                 </div>
+              </div>
+            </div>
+         </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Quill Editor Styles & Scripts (Free, No API Key required) -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    initQuillEditor();
+  });
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    initQuillEditor();
+  });
+
+  function initQuillEditor() {
+    const container = document.getElementById('quill_editor_container');
+    const input = document.getElementById('article_content_field');
+    
+    if (container && !container.classList.contains('quill-initialized')) {
+      // Clear container first
+      container.innerHTML = input.value || '';
+      
+      const quill = new Quill('#quill_editor_container', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['link', 'image', 'video'],
+            ['clean']
+          ]
+        },
+        placeholder: 'Write your masterpiece here...'
+      });
+
+      container.classList.add('quill-initialized');
+
+      // Update hidden field on text change
+      quill.on('text-change', function() {
+        input.value = quill.root.innerHTML;
+      });
+      
+      // Ensure sync on form submit as backup
+      const form = container.closest('form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          input.value = quill.root.innerHTML;
+        });
+      }
+    }
+  }
+
+  // Image Preview Logic
+  document.addEventListener('change', function(e) {
+    // Cover Image Preview
+    if (e.target && e.target.id === 'article_cover_input') {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const previewContainer = document.getElementById('article_cover_preview_container');
+          let previewImg = document.getElementById('article_cover_preview');
+          
+          if (!previewImg) {
+            previewImg = document.createElement('img');
+            previewImg.id = 'article_cover_preview';
+            previewImg.className = 'w-full aspect-video object-cover block';
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(previewImg);
+          }
+          previewImg.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // OG Image Preview
+    if (e.target && e.target.id === 'og_image_input') {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const previewContainer = document.getElementById('og_image_preview_container');
+          const previewImg = document.getElementById('og_image_preview');
+          
+          previewContainer.classList.remove('hidden');
+          previewImg.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  });
+</script>
+
+<style>
+  .ql-toolbar.ql-snow {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-color: #f3f4f6;
+    background: #f9fafb;
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .dark .ql-toolbar.ql-snow {
+    border-color: #1f1f27;
+    background: #0d0d12;
+    border-bottom: 1px solid #1f1f27;
+  }
+  .ql-container.ql-snow {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-color: transparent;
+    min-height: 500px;
+    font-size: 1.125rem;
+    font-family: inherit;
+  }
+  .dark .ql-container.ql-snow {
+    border-color: transparent;
+    color: #e5e7eb;
+  }
+  .ql-editor {
+    min-height: 500px;
+    padding: 2.5rem;
+    line-height: 1.8;
+  }
+  .ql-editor.ql-blank::before {
+    color: #9ca3af;
+    font-style: normal;
+    left: 2.5rem;
+  }
+</style>

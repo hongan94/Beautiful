@@ -10337,3 +10337,27 @@ html.dark .\[html\.dark_\&\]\:block {
 html.dark .\[html\.dark_\&\]\:hidden {
   display: none;
 }
+/* Global Fix for Table Row Hover visibility */
+.table tbody tr:hover, 
+table tbody tr:hover,
+[data-datatable="true"] table tbody tr:hover {
+  background-color: var(--tw-gray-100) !important;
+  transition: background-color 0.1s ease-in-out;
+}
+
+.dark .table tbody tr:hover, 
+.dark table tbody tr:hover,
+html.dark .table tbody tr:hover, 
+html.dark table tbody tr:hover,
+html.dark [data-datatable="true"] table tbody tr:hover {
+  background-color: var(--tw-gray-200) !important;
+}
+
+/* Specific text color for hover in dark mode */
+.dark .table tbody tr:hover td,
+.dark table tbody tr:hover td,
+html.dark .table tbody tr:hover td, 
+html.dark table tbody tr:hover td,
+html.dark [data-datatable="true"] table tbody tr:hover td {
+  color: var(--tw-gray-900) !important;
+}

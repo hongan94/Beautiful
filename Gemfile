@@ -21,7 +21,7 @@ gem "jbuilder"
 gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i[ mswin mingw x64_mingw jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
@@ -42,7 +42,7 @@ gem "thruster", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug", platforms: %i[ mri mswin mingw x64_mingw ], require: "debug/prelude"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -76,3 +76,15 @@ gem "jsonapi-serializer", "~> 2.2"
 gem "blueprinter", "~> 1.1"
 
 gem "axlsx_rails", "~> 0.6.1"
+
+gem "prometheus-client", "~> 4.2"
+
+gem "prometheus_exporter", "~> 2.3"
+gem "jwt"
+gem "faraday"
+gem "redis"
+gem "connection_pool"
+
+gem "searchkick"
+gem "elasticsearch", "~> 8.0" # Đảm bảo client cùng phiên bản với server
+gem "rack-cors"

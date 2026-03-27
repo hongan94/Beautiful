@@ -1,0 +1,17 @@
+<div class="container-fixed p-6">
+  <div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center">
+      <a href="<%= admin_articles_path %>" class="text-gray-500 hover:text-primary me-4">
+        <i class="ki-filled ki-arrow-left text-xl"></i>
+      </a>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Article</h1>
+    </div>
+    <% if @article.published? %>
+      <a href="/api/v1/articles/<%= @article.slug %>" target="_blank" class="btn btn-light dark:bg-coal-400 btn-sm font-medium">
+        <i class="ki-filled ki-eye me-2"></i> View JSON
+      </a>
+    <% end %>
+  </div>
+  
+  <%= render 'form', article: @article %>
+</div>

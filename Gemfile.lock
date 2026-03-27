@@ -115,10 +115,25 @@ GEM
     dotenv (3.1.8)
     drb (2.2.3)
     ed25519 (1.4.0)
+    elastic-transport (8.4.1)
+      faraday (< 3)
+      multi_json
+    elasticsearch (8.19.3)
+      elastic-transport (~> 8.3)
+      elasticsearch-api (= 8.19.3)
+      ostruct
+    elasticsearch-api (8.19.3)
+      multi_json
     erb (5.0.1)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
+    faraday (2.14.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     ffi (1.17.2)
     ffi (1.17.2-x86_64-linux-gnu)
     friendly_id (5.5.1)
@@ -147,6 +162,8 @@ GEM
     json (2.12.0)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
+    jwt (3.1.2)
+      base64
     kamal (2.6.1)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -177,6 +194,9 @@ GEM
     mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
+    multi_json (1.19.1)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
     net-imap (0.5.8)
       date
       net-protocol
@@ -208,6 +228,10 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.4.0)
+    prometheus-client (4.2.5)
+      base64
+    prometheus_exporter (2.3.1)
+      webrick
     propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -222,6 +246,9 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.15)
+    rack-cors (3.0.0)
+      logger
+      rack (>= 3.0.14)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -263,6 +290,10 @@ GEM
     rdoc (6.14.0)
       erb
       psych (>= 4.0.0)
+    redis (5.4.1)
+      redis-client (>= 0.22.0)
+    redis-client (0.27.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -300,6 +331,8 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (2.4.1)
+    searchkick (6.1.0)
+      activemodel (>= 7.2)
     securerandom (0.4.1)
     selenium-webdriver (4.32.0)
       base64 (~> 0.2)
@@ -352,6 +385,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webrick (1.9.2)
     websocket (1.2.11)
     websocket-driver (0.7.7)
       base64
@@ -373,19 +407,28 @@ DEPENDENCIES
   brakeman
   byebug (~> 12.0)
   capybara
+  connection_pool
   debug
+  elasticsearch (~> 8.0)
+  faraday
   friendly_id (~> 5.4)
   image_processing (~> 1.14)
   jbuilder
   jsbundling-rails (~> 1.3)
   jsonapi-serializer (~> 2.2)
+  jwt
   kamal
   pagy (~> 9.3)
   pg (~> 1.1)
+  prometheus-client (~> 4.2)
+  prometheus_exporter (~> 2.3)
   propshaft
   puma (>= 5.0)
+  rack-cors
   rails (~> 8.0.0)
+  redis
   rubocop-rails-omakase
+  searchkick
   selenium-webdriver
   solid_cable
   solid_cache

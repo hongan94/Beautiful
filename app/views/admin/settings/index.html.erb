@@ -1,0 +1,58 @@
+<div class="container-fixed p-6">
+  <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">System Settings</h1>
+  </div>
+  
+  <div class="bg-white dark:bg-coal-500 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6">
+    <%= form_with url: admin_settings_path, method: :post, local: true, class: "space-y-6" do |form| %>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <%= form.label "settings[site_name]", "Site Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+          <%= form.text_field "settings[site_name]", value: Setting.get('site_name'), class: "input w-full px-4 py-2 border rounded-lg focus:ring-primary dark:bg-coal-600 dark:border-gray-600 dark:text-gray-200", placeholder: "My Awesome CMS" %>
+          <p class="text-xs text-gray-500 mt-1">This will be used in emails and page titles.</p>
+        </div>
+        
+        <div>
+          <%= form.label "settings[contact_email]", "Contact Email", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+          <%= form.email_field "settings[contact_email]", value: Setting.get('contact_email'), class: "input w-full px-4 py-2 border rounded-lg focus:ring-primary dark:bg-coal-600 dark:border-gray-600 dark:text-gray-200", placeholder: "hello@example.com" %>
+        </div>
+        
+        <div class="col-span-1 md:col-span-2">
+          <%= form.label "settings[google_analytics_id]", "Google Analytics Tracking ID", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+          <%= form.text_field "settings[google_analytics_id]", value: Setting.get('google_analytics_id'), class: "input w-full px-4 py-2 border rounded-lg focus:ring-primary dark:bg-coal-600 dark:border-gray-600 dark:text-gray-200", placeholder: "G-XXXXXXXXXX" %>
+        </div>
+      </div>
+
+      <div class="p-4 bg-gray-50 dark:bg-coal-600/50 rounded-lg border border-gray-100 dark:border-coal-400 mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <label class="flex items-center cursor-pointer group">
+          <%= form.check_box "settings[maintenance_mode]", { checked: Setting.get('maintenance_mode') == '1', class: "checkbox size-5 rounded border-gray-300 text-danger focus:ring-danger" }, '1', '0' %>
+          <span class="ms-3 text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-danger flex items-center">
+            <i class="ki-filled ki-warning-2 text-warning me-2 text-lg"></i>
+            Enable Maintenance Mode
+          </span>
+        </label>
+
+        <label class="flex items-center cursor-pointer group">
+          <%= form.check_box "settings[use_elasticsearch]", { checked: Setting.get('use_elasticsearch') == '1', class: "checkbox size-5 rounded border-gray-300 text-info focus:ring-info" }, '1', '0' %>
+          <span class="ms-3 text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-info flex items-center">
+            <i class="ki-filled ki-magnifier text-info me-2 text-lg"></i>
+            Use Elasticsearch Advanced Search
+          </span>
+        </label>
+
+        <label class="flex items-center cursor-pointer group">
+          <%= form.check_box "settings[use_prometheus]", { checked: Setting.get('use_prometheus') == '1', class: "checkbox size-5 rounded border-gray-300 text-success focus:ring-success" }, '1', '0' %>
+          <span class="ms-3 text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-success flex items-center">
+            <i class="ki-filled ki-chart-line text-success me-2 text-lg"></i>
+            Enable Prometheus Performance Exporter
+          </span>
+        </label>
+      </div>
+
+      <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6 flex justify-end">
+        <%= form.submit "Save Configurations", class: "btn btn-primary dark:bg-primary text-white py-2 px-6 rounded-lg font-medium cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

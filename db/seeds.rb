@@ -2,22 +2,43 @@
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+puts "Seeding UserGroups and Permissions..."
+
+modules = %w[User Manager UserGroup SystemConfig Dashboard]
+actions = %w[create read update delete import export]
+
+modules.each do |subject_class|
+  actions.each do |action|
+    # Only allow 'read' for Dashboard
+    next if subject_class == "Dashboard" && action != "read"
+    
+    Permission.find_or_create_by!(
+      subject_class: subject_class,
+      action: action
+    ) do |p|
+      p.description = "Allow #{action} on #{subject_class}"
+    end
+  end
+end
+
+if UserGroup.count.zero?
+  admin_group = UserGroup.create!(name: "Super Admin", description: "Administrator with all permissions")
+  admin_group.permissions = Permission.all
+
+  editor_group = UserGroup.create!(name: "Content Editor", description: "Can manage content but not configuration")
+  editor_group.permissions = Permission.where.not(subject_class: ["SystemConfig", "UserGroup"])
+end
+
+puts "Permissions and UserGroups seeded successfully."
 50.times do |i|
-  User.create(
-    first_name: "John",
-    last_name: "Doe",
-    email_address: "john.doe#{i}@example.com",
-    phone_number: "+1234567890",
-    password: "password",
-    password_confirmation: "password",
-    role: "admin",
-    status: "active",
-    created_at: Time.now,
-    updated_at: Time.now
-  )
+  email = "yuna#{i}@example.com"
+  User.find_or_create_by!(email_address: email) do |user|
+    user.first_name = "John"
+    user.last_name = "Doe"
+    user.phone_number = "+1234567890"
+    user.password = "password"
+    user.password_confirmation = "password"
+    user.role = "admin"
+    user.status = "active"
+  end
 end
