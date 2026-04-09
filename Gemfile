@@ -73,7 +73,7 @@ gem "jsbundling-rails", "~> 1.3"
 
 gem "jsonapi-serializer", "~> 2.2"
 
-gem "blueprinter", "~> 1.1"
+gem "blueprinter", "~> 1.2"
 
 gem "axlsx_rails", "~> 0.6.1"
 
