@@ -63,7 +63,7 @@ group :test do
 end
 
 gem "byebug", "~> 12.0"
-gem "friendly_id", "~> 5.4"
+gem "friendly_id", "~> 5.6"
 
 gem "image_processing", "~> 1.14"
 
