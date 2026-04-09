@@ -67,7 +67,7 @@ gem "friendly_id", "~> 5.4"
 
 gem "image_processing", "~> 1.14"
 
-gem "pagy", "~> 9.3"
+gem "pagy", "~> 43.4"
 
 gem "jsbundling-rails", "~> 1.3"
 
