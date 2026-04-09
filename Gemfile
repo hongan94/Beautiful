@@ -62,7 +62,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "byebug", "~> 12.0"
+gem "byebug", "~> 13.0"
 gem "friendly_id", "~> 5.4"
 
 gem "image_processing", "~> 1.14"
