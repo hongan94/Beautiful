@@ -1,0 +1,155 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  lint:
+    name: 🧹 Lint & Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+          bundler-cache: false
+
+      - name: Cache Dependencies (actions/cache@v4)
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor/bundle
+            tmp/cache/bootsnap
+            tmp/cache/assets
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/Gemfile.lock', '**/package-lock.json', '**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-
+
+      - name: Install Bundler dependencies
+        run: bundle install --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Run RuboCop (Code Style)
+        run: bundle exec rubocop --parallel
+
+      - name: Run Brakeman (Static Security Audit)
+        run: bundle exec brakeman -q -w2
+
+  test:
+    name: 🧪 Automated Test Suite
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+          bundler-cache: false
+
+      - name: Cache Dependencies (actions/cache@v4)
+        uses: actions/cache@v4
+        with:
+          path: |
+            vendor/bundle
+            tmp/cache/bootsnap
+            tmp/cache/assets
+          key: ${{ runner.os }}-deps-${{ hashFiles('**/Gemfile.lock', '**/package-lock.json', '**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-deps-
+
+      - name: Install dependencies & Database setup
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres_password
+        run: |
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
+          bundle exec rails db:prepare
+          SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+          bundle exec rspec
+
+  build:
+    name: 🐳 Docker Multi-Stage Build & Cache
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push Docker Image with BuildKit Cache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: 🚀 Continuous Deployment
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby for Kamal
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.0'
+
+      - name: Install Kamal & Deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASS }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          gem install kamal
+          kamal deploy

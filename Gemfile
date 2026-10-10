@@ -88,3 +88,11 @@ gem "connection_pool"
 gem "searchkick"
 gem "elasticsearch", "~> 8.0" # Đảm bảo client cùng phiên bản với server
 gem "rack-cors"
+
+# --- Capistrano (added by RailsVPS Studio) ---
+group :development do
+  gem "capistrano", "~> 3.19", require: false
+  gem "capistrano-rails", "~> 1.6", require: false
+  gem "capistrano-rbenv", "~> 2.2", require: false
+  gem "capistrano-bundler", "~> 2.1", require: false
+end

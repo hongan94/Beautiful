@@ -2,7 +2,7 @@ module Api
   module V1
     class ArticlesController < BaseController
       include JsonIndexable
-      skip_before_action :verify_authenticity_token
+      skip_before_action :verify_authenticity_token, raise: false
       
       def index
         # Phục vụ public API cho Frontend (React/Nextjs) lấy danh sách bài viết
